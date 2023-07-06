@@ -18,11 +18,11 @@ class GameListApiView(APIView):
     def get(self, request, game_id, *args, **kwargs):
         if game_id:
             game = self.get_object(game_id, request.user.id)
-            serializer = GameSerializer(game, many=False)
+            serializer = GameSerializer(game, many=False, context={'request': request})
             return Response(serializer.data, status=status.HTTP_200_OK)
         else:
             games = Game.objects.filter(user=request.user.id)
-            serializer = GameSerializer(games, many=True)
+            serializer = GameSerializer(games, many=True, context={'request': request})
             return Response(serializer.data, status=status.HTTP_200_OK)
 
     # 2. Create
