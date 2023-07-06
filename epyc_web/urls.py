@@ -16,7 +16,17 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+from epyc.views import (
+    GameListApiView,
+    EntryListApiView,
+    GameEntriesListApiView
+)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('api/games', GameListApiView.as_view()),
+    path('api/games/<uuid:game_id>/', GameListApiView.as_view()),
+    path('api/games/<uuid:game_id>/entries', GameEntriesListApiView.as_view()),
+    path('api/entries', EntryListApiView.as_view()),
+    path('api/entries/<uuid:entries_id>/', EntryListApiView.as_view()),
 ]
