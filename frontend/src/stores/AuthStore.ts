@@ -3,7 +3,7 @@ import { defineStore } from 'pinia'
 export const useAuth = defineStore('auth', {
   state: () => {
     if (localStorage.getItem('auth')) {
-      return JSON.parse(localStorage.getItem('auth'))
+      return JSON.parse(localStorage.getItem('auth')!!)
     } else {
       return {
         access_token: null,
@@ -20,12 +20,12 @@ export const useAuth = defineStore('auth', {
     renewToken: (state) => state.renew_token
   },
   actions: {
-    updateAccessToken (newAccessToken) {
+    updateAccessToken (newAccessToken: string) {
       console.log(this)
       this.access_token = newAccessToken
       localStorage.setItem('auth', JSON.stringify(this))
     },
-    updateRenewToken (newRenewToken) {
+    updateRenewToken (newRenewToken: string) {
       this.renew_token = newRenewToken
       localStorage.setItem('auth', JSON.stringify(this))
     }
