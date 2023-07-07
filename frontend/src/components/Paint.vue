@@ -8,6 +8,7 @@
 
 <script>
 import Painterro from 'painterro'
+import { useAuth } from '@/stores/AuthStore'
 
 export default {
   name: 'Paint',
@@ -18,6 +19,10 @@ export default {
     }
   },
   mounted () {
+    const authStore = useAuth()
+    console.log(authStore.accessToken)
+    authStore.updateAccessToken('oof2')
+    console.log(authStore.accessToken)
     this.painterro = Painterro({
       id: 'painterro',
       colorScheme: {
