@@ -1,3 +1,9 @@
+<script setup lang="ts">
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
+import Painterro from 'painterro'
+</script>
+
 <template>
   <div style="display: flex; flex-direction: column;">
     <h2>{{ msg }}</h2>
@@ -6,24 +12,17 @@
   </div>
 </template>
 
-<script>
-import Painterro from 'painterro'
-import { useAuth } from '@/stores/AuthStore'
-
+<script lang="ts">
 export default {
   name: 'Paint',
-  data () {
+  data() {
     return {
       painterro: null,
       msg: 'A cat winks at you with the grace of a very sleepy toddler.'
     }
   },
-  mounted () {
-    const authStore = useAuth()
-    console.log(authStore.accessToken)
-    authStore.updateAccessToken('oof2')
-    console.log(authStore.accessToken)
-    this.painterro = Painterro({
+  mounted() {
+    const paint = Painterro({
       id: 'painterro',
       colorScheme: {
         main: '#f8f8f8',
@@ -38,7 +37,7 @@ export default {
       availableEraserWidths: [1, 2, 4, 8, 16, 64],
       availableLineWidths: [1, 2, 4, 8, 16, 64],
       availableArrowLengths: [10, 40, 100],
-      saveHandler: (image, done) => {
+      saveHandler: (image: { asBlob: (arg0: string) => BlobPart; }, done: (arg0: boolean) => void) => {
         const type = 'image/png'
         const file = new File([image.asBlob(type)], 'file.png', {
           type: type
@@ -47,10 +46,11 @@ export default {
         done(true)
       }
     })
-    this.painterro.show()
+    this.painterro = paint
+    paint.show()
   },
   methods: {
-    add_file (file) {
+    add_file(file: File) {
       console.log(file)
     }
   }
@@ -81,7 +81,7 @@ a {
 .paint {
   position: relative;
   align-self: center;
-  height: calc(min(80vh,80vw) + 40px);
-  width: min(80vh,80vw);
+  height: calc(min(80vh, 80vw) + 40px);
+  width: min(80vh, 80vw);
 }
 </style>
