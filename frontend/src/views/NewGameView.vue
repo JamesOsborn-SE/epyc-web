@@ -1,0 +1,46 @@
+<script setup lang="ts">
+import { ref } from 'vue'
+import { useAuth } from '../stores/auth'
+import router from '@/router'
+
+const authStore = useAuth()
+const sentence = ref(String())
+const isSubmitting = ref(false)
+const errors = ref([])
+
+function onSubmit(event: Event){
+  isSubmitting.value = true
+  event.preventDefault()
+  console.log("sentence", sentence.value)
+  // create game
+  // create entry
+  // redirect to new entry
+  isSubmitting.value = false
+}
+
+</script>
+
+<template>
+  <div>
+    <h1>New Game</h1>
+    <form :onsubmit="onSubmit">
+
+      <div class="mb-3">
+        <label class="form-label">Sentence</label>
+        <input v-model="sentence" :required="true" pattern='(\p{L}+ +){3,}.*' title="four or more words">
+      </div>
+      <div class="mb-3">
+        <button class="btn btn-primary" type="submit" value="submit" :disabled="isSubmitting">
+          <span v-show="isSubmitting" class="spinner-border spinner-border-sm me-1"></span>
+          Start new game
+        </button>
+      </div>
+      <p v-if="errors.values.length">
+        <b>Please correct the following error(s):</b>
+      <ul>
+        <li v-for="error in errors">{{ error }}</li>
+      </ul>
+      </p>
+    </form>
+  </div>
+</template>
