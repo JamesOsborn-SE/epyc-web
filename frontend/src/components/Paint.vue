@@ -5,11 +5,7 @@ import Painterro from 'painterro'
 </script>
 
 <template>
-  <div style="display: flex; flex-direction: column;">
-    <h2>{{ msg }}</h2>
-    <h3>Draw this ^^</h3>
-    <div id="painterro" class="paint"></div>
-  </div>
+  <div id="painterro" class="paint"></div>
 </template>
 
 <script lang="ts">
