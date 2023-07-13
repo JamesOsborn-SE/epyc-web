@@ -11,15 +11,17 @@ const isSubmitting = ref(false)
 const errors = ref([])
 
 // redirect to home if already logged in
-if (authStore.refreshToken) {
+if (!authStore.hasExpired) {
     router.push('/')
 }
 
-function onSubmit() {
+async function onSubmit(event: Event) {
+    event.preventDefault()
+
     isSubmitting.value = true
-    return authStore.login(username.value, password.value)
+    await authStore.login(username.value, password.value)
         .then(() => {
-            if (authStore.accessToken)
+            if (!authStore.hasExpired)
                 router.push('/');
         })
         .catch()
@@ -31,10 +33,10 @@ function onSubmit() {
 
 <template>
     <div class="col-md-6 offset-md-3 mt-5">
-        
-        <h2>Login</h2>
-        <form :onsubmit="onSubmit">
 
+        <h2>Login</h2>
+        <form id="loginForm" @submit="onSubmit">
+            
             <div class="mb-3">
                 <label class="form-label">Username</label>
                 <input v-model="username" :required="true">
@@ -56,5 +58,5 @@ function onSubmit() {
                 </ul>
             </p>
         </form>
-    </div>
+        </div>
 </template>
