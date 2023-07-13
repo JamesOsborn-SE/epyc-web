@@ -32,9 +32,9 @@ urlpatterns = [
     path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
     path('api/token/verify/', TokenVerifyView.as_view(), name='token_verify'),
-    path('api/games', GameListApiView.as_view()),
+    path('api/games/', GameListApiView.as_view(), kwargs={'game_id': None}),
     path('api/games/<uuid:game_id>/', GameListApiView.as_view()),
     path('api/games/<uuid:game_id>/entries', GameEntriesListApiView.as_view()),
-    path('api/entries', EntryListApiView.as_view()),
-    path('api/entries/<uuid:entries_id>/', EntryListApiView.as_view()),
+    path('api/entries/', EntryListApiView.as_view(), kwargs={'entry_id': None}),
+    path('api/entries/<uuid:entry_id>', EntryListApiView.as_view()),
 ]
