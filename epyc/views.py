@@ -45,9 +45,12 @@ class EntryListApiView(APIView):
 
     def get(self, request, entry_id, *args, **kwargs):
         if entry_id:
-            entries = Entry.objects.filter(id=entry_id, user=request.user.id)
-            serializer = EntrySerializer(entries, many=False)
-            return Response(serializer.data, status=status.HTTP_200_OK)
+            entry = Entry.objects.get(id=entry_id)
+            if entry.user.id == request.user.id:
+                serializer = EntrySerializer(entry, many=False)
+                return Response(serializer.data, status=status.HTTP_200_OK)
+            else:
+                return Response(status=status.HTTP_403_FORBIDDEN)
         else:
             entries = Entry.objects.filter(user=request.user.id)
             serializer = EntrySerializer(entries, many=True)
