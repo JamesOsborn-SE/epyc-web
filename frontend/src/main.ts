@@ -14,9 +14,10 @@ app.use(router)
 app.mount('#app')
 
 watch(
-    pinia.state,
-    (state) => {
-      localStorage.setItem("auth", JSON.stringify(state.auth));
-    },
-    { deep: true }
-    );
+  pinia.state,
+  (state) => {
+    localStorage.setItem("auth", JSON.stringify(state.auth));
+    localStorage.setItem("game", JSON.stringify(state.game));
+  },
+  { deep: true }
+);
