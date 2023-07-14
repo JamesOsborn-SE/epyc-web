@@ -1,34 +1,31 @@
 <script setup lang="ts"> 
     import { useGame } from '@/stores/game';
-    import Paint from '../components/Paint.vue'
-    import { defineProps, onMounted } from "vue"
-    import { useRouter } from "vue-router"
-    import type { Entry } from '@/types/Entry';
+    import { defineProps, onMounted, ref } from "vue"
+    import { Entry } from '@/types/Entry';
     
     const gameStore = useGame()
-    const props = defineProps( {
+    const entry = ref()
+    const props = defineProps({
       id: {
         type: String,
         required: true,
       }
     })
     onMounted( () => {
-        console.log(props.id)
-        const e = gameStore.getEntry(props.id)
-        // debugger
-        e.then( (r: Entry) =>{
-          console.log(r)
+        gameStore
+        .getEntry(props.id)
+        .then( (e: Entry) =>{
+          entry.value = e
         })
     } )
 
 </script>
 
-
 <template>
   <div class="about">
-    <h1>{{ $route.params.id }}</h1>
-    <div v-if="$">
-
+    <h1>{{ gameStore.getGame.id }}</h1>
+    <div v-show="entry">
+      {{ entry }}
     </div>
   </div>
 </template>
