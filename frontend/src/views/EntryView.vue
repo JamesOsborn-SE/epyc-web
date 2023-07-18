@@ -1,6 +1,6 @@
 <script setup lang="ts"> 
     import { useGame } from '@/stores/game';
-    import { defineProps, onMounted, ref } from "vue"
+    import { onMounted, ref } from "vue"
     import { Entry } from '@/types/Entry';
     
     const gameStore = useGame()
