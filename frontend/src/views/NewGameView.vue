@@ -1,20 +1,22 @@
 <script setup lang="ts">
 import { ref } from 'vue'
-import { useAuth } from '../stores/auth'
 import router from '@/router'
+import { useGame } from '@/stores/game';
+import type { Game } from '@/types/Game';
 
-const authStore = useAuth()
+const gamesStore = useGame()
 const sentence = ref(String())
 const isSubmitting = ref(false)
 const errors = ref([])
 
-function onSubmit(event: Event){
+function onSubmit(event: Event) {
   isSubmitting.value = true
   event.preventDefault()
   console.log("sentence", sentence.value)
-  // create game
-  // create entry
-  // redirect to new entry
+  gamesStore.newGame(sentence.value).then((game: Game) => {
+    const firstEntry = game.entries[0].id 
+    router.push({ path: `/entry/${firstEntry}`, params: { id: firstEntry} })
+  })
   isSubmitting.value = false
 }
 
