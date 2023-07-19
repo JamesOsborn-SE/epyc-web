@@ -38,6 +38,10 @@ export const useAuth = defineStore('auth', {
     updateRenewToken(newRenewToken: string) {
       this.refreshToken = newRenewToken
     },
+    logout(){
+      this.refreshTokenExpiresAt = 0
+      localStorage.setItem('auth','')
+    },
     async login(username: string, password: string): Promise<void> {
       const response = await axios.post(this.endpoints.obtainJWT,
         {
