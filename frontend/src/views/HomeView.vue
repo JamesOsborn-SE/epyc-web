@@ -3,6 +3,6 @@
 
 <template>
   <main>
-    <Paint />
+    Home
   </main>
 </template>
