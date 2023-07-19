@@ -6,17 +6,19 @@ import { useAuth } from '@/stores/auth'
 
 export const useGame = defineStore('game', {
   state: () => {
-    if (localStorage.getItem('game')) {
+    if (localStorage.getItem('game') && localStorage.getItem('game') != "undefined") {
       return JSON.parse(localStorage.getItem('game')!!)
     } else {
       return {
         id: null,
+        created_at: null,
+        user: null,
         entries: []
       }
     }
   },
   getters: {
-    getGame: (state) => state,
+    getCurrentGame: (state) => state,
     getLatestEntry(state) {
       if(state.entries && state.entries.length > 0){
         return state.entries.sort((a: Entry, b: Entry) => a.sequence > b.sequence).slice(0,1)[0]
@@ -26,11 +28,16 @@ export const useGame = defineStore('game', {
     } 
   },
   actions: {
-    async newGame(): Promise<Game> {
+    async newGame(sentence: string): Promise<Game> {
       const authStore = useAuth()
-      return axios.post('http://127.0.0.1:8000/api/games/', {}, authStore.getHeaders)
+      return axios.post('http://127.0.0.1:8000/api/games/', {
+        sentence: sentence
+      }, authStore.getHeaders)
         .then(response => {
           this.id = response.data.id
+          this.created_at = response.data.created_at
+          this.user = response.data.user
+          this.entries = response.data.entries as Array<Entry>
           return response.data as Game
         })// todo: add catches for 401,etc
     },
@@ -43,12 +50,12 @@ export const useGame = defineStore('game', {
           return response.data as Entry
         })// todo: add catches for 401,etc
     },
-    async setEntry(entry: Entry): Promise<Array<Entry>> {
+    async newEntry(entry: Entry): Promise<Array<Entry>> {
       const authStore = useAuth()
       return axios.post('http://127.0.0.1:8000/api/entries/', entry, authStore.getHeaders)
         .then(response => {
           this.id = response.data.game_id
-          this.entries = response.data as Entry
+          this.entries = [response.data as Entry]
           return response.data as Array<Entry>
         })// todo: add catches for 401,etc
     }
