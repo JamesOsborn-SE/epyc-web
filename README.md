@@ -12,8 +12,9 @@ You start with a sentence pass it to the next person and it they draw a picture.
 
 ## Tech used
 
-[django backend](https://www.djangoproject.com/)https://www.djangoproject.com/
-[Vue frontend](https://vuejs.org/)https://vuejs.org/
+[django backend](https://www.djangoproject.com/)
+
+[Vue frontend](https://vuejs.org/)
 
 ## Requirements
 
