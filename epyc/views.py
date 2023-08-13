@@ -80,7 +80,7 @@ class EntryListApiView(APIView):
              'sentence': request.data.get('sentence'),
              'drawing': request.data.get('drawing'),
              'sequence': request.data.get('sequence'),
-             'gameId': request.data.get('gameId'),
+             'game_id': request.data.get('game_id'),
         }
         serializer = EntrySerializer(data=data)
         if serializer.is_valid():
