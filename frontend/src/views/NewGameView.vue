@@ -4,7 +4,7 @@ import router from '@/router'
 import { useGame } from '@/stores/game';
 import type { Game } from '@/types/Game';
 
-const gamesStore = useGame()
+const gameStore = useGame()
 const sentence = ref(String())
 const isSubmitting = ref(false)
 const errors = ref([])
@@ -13,7 +13,7 @@ function onSubmit(event: Event) {
   isSubmitting.value = true
   event.preventDefault()
   console.log("sentence", sentence.value)
-  gamesStore.newGame(sentence.value).then((game: Game) => {
+  gameStore.newGame(sentence.value).then((game: Game) => {
     const firstEntry = game.entries[0].id 
     router.push({ path: `/entry/${firstEntry}`, params: { id: firstEntry} })
   })
