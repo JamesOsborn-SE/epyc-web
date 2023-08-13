@@ -2,6 +2,8 @@
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 import Painterro from 'painterro'
+const emit = defineEmits(['save'])
+
 </script>
 
 <template>
@@ -9,12 +11,13 @@ import Painterro from 'painterro'
 </template>
 
 <script lang="ts">
+const mimePng = 'image/png';
 export default {
   name: 'Paint',
   data() {
     return {
       painterro: null,
-      msg: 'A cat winks at you with the grace of a very sleepy toddler.'
+      imageBlob: Blob,
     }
   },
   mounted() {
@@ -34,11 +37,8 @@ export default {
       availableLineWidths: [1, 2, 4, 8, 16, 64],
       availableArrowLengths: [10, 40, 100],
       saveHandler: (image: { asBlob: (arg0: string) => BlobPart; }, done: (arg0: boolean) => void) => {
-        const type = 'image/png'
-        const file = new File([image.asBlob(type)], 'file.png', {
-          type: type
-        })
-        this.add_file(file)
+        const blob = image.asBlob(mimePng)
+        this.add_blob(blob)
         done(true)
       }
     })
@@ -46,8 +46,11 @@ export default {
     paint.show()
   },
   methods: {
-    add_file(file: File) {
-      console.log(file)
+    add_blob(data: BlobPart) {
+      const blob = new Blob([data], {
+        type: mimePng,
+      });
+      this.$emit('save', blob)
     }
   }
 }
