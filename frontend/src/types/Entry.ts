@@ -1,10 +1,10 @@
 export class Entry {
     constructor(
-        public id: string,
-        public created_at: Date,
-        public user: string,
+        public id: string | null,
+        public created_at: Date | null,
+        public user: string | null,
         public game_id: string,
         public sequence: number,
-        public sentence: string,
-        public drawing: Blob) {}
+        public sentence: string | null,
+        public drawing: string | ArrayBuffer | null) {}
 }
