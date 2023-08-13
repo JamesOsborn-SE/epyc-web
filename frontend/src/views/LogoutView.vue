@@ -4,7 +4,7 @@ import router from '@/router'
 
 const authStore = useAuth()
 authStore.logout()
-router.push('/')
+router.push('/login')
 
 </script>
 
