@@ -15,7 +15,7 @@ function onSubmit(event: Event) {
   console.log("sentence", sentence.value)
   gameStore.newGame(sentence.value).then((game: Game) => {
     const firstEntry = game.entries[0].id 
-    router.push({ path: `/entry/${firstEntry}`, params: { id: firstEntry} })
+    router.push({ name: 'entry', params: { id: firstEntry} })
   })
   isSubmitting.value = false
 }
