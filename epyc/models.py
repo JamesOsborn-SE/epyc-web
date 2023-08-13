@@ -12,6 +12,10 @@ class Game(models.Model):
     created_at = models.DateField(auto_now_add=True)
 
 class Entry(models.Model):
+    """A game entry
+    Attributes:
+        drawing: a base64 encoded string with the data type as a prefix
+    """
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     created_at = models.DateField(auto_now_add=True)
     user = models.ForeignKey(
@@ -22,5 +26,5 @@ class Entry(models.Model):
     game_id = models.ForeignKey(Game, on_delete=models.CASCADE)
     sequence = models.IntegerField(blank = False,
         null = False)
-    sentence = models.CharField(max_length=500,blank=True)
-    drawing = models.BinaryField(blank=True,null=True)
+    sentence = models.TextField(max_length=500,blank=True, null=True)
+    drawing = models.TextField(blank=True, null=True)
