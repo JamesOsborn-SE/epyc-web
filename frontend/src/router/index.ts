@@ -32,7 +32,6 @@ const router = createRouter({
     {
       path: '/entry/:id',
       name: 'entry',
-      props: true,
       component: EntryView
     },
     {
