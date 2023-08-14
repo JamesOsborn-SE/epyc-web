@@ -15,7 +15,7 @@ export default {
       () => this.$route.params,
       (toParams) => {
         gameStore.value
-          .getGame(toParams.id)
+          .getEntries(toParams.id)
           .then((g: Entry[]) => {
             entries.value = g
             console.log("game", g)
@@ -35,7 +35,7 @@ export default {
 
     onMounted(() => {
       gameStore.value
-        .getGame(route.params.id)
+        .getEntries(route.params.id)
         .then((g: Entry[]) => {
             entries.value = g
             console.log("game", g)
