@@ -41,6 +41,15 @@ export const useGame = defineStore('game', {
           return response.data as Game
         })// todo: add catches for 401,etc
     },
+    async getEntries(gameId: string): Promise<Entry[]> {
+      const authStore = useAuth()
+      return axios.get('http://127.0.0.1:8000/api/games/' + gameId + '/entries', authStore.getHeaders)
+        .then(response => {
+          this.id = response.data.id
+          this.entries = response.data as Entry[]
+          return this.entries
+        })// todo: add catches for 401,etc
+    },
     async getEntry(id: string): Promise<Entry> {
       const authStore = useAuth()
       return axios.get('http://127.0.0.1:8000/api/entries/' + id, authStore.getHeaders)
