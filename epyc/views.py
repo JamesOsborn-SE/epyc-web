@@ -92,6 +92,6 @@ class EntryListApiView(APIView):
 class GameEntriesListApiView(APIView):
     permission_classes = [permissions.IsAuthenticated]
     def get(self, request, game_id, *args, **kwargs):
-        game = Entry.objects.filter(game_id=game_id, user=request.user.id)
-        serializer = EntrySerializer(game, many=False)
+        entries = Entry.objects.filter(game_id=game_id, user=request.user.id)
+        serializer = EntrySerializer(entries, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
