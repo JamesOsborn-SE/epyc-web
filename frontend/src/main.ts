@@ -3,7 +3,7 @@ import './assets/main.css'
 import { createApp, watch } from 'vue'
 import { createPinia } from 'pinia'
 
-import App from './App.vue'
+import App from '@/App.vue'
 import router from './router'
 
 const app = createApp(App)
@@ -16,8 +16,13 @@ app.mount('#app')
 watch(
   pinia.state,
   (state) => {
-    localStorage.setItem("auth", JSON.stringify(state.auth));
-    localStorage.setItem("game", JSON.stringify(state.game));
+    //HACK: not sure why this is being set to undefined on refresh.. 
+    if (state.auth){
+      localStorage.setItem("auth", JSON.stringify(state.auth));
+    }
+    if(state.game){
+      localStorage.setItem("game", JSON.stringify(state.game));
+    }
   },
   { deep: true }
 );
