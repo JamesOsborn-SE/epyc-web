@@ -31,19 +31,6 @@ export default {
       () => this.$route.params,
       (toParams) => {
         getAllEntries(toParams.id)
-        gameStore.value
-          .getEntries(toParams.id)
-          .then((g: Entry[]) => {
-            entries.value = g
-            console.log("game", g)
-          })
-          .catch((err: AxiosError) => {
-            if (err.response?.status == 401) {
-              router.push("/logout")
-            } else {
-              console.log(err)
-            }
-          })
       })
   },
   setup() {
