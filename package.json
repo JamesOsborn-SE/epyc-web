@@ -3,6 +3,7 @@
     "start:backend:bash": "source .venv/bin/activate && python manage.py runserver",
     "setup:venv": "python -m venv .venv",
     "install:requirements:bash": "source .venv/bin/activate && pip install -r requirements.txt",
+    "create:migrations:database": "source .venv/bin/activate && python manage.py makemigrations",
     "migrate:database": "source .venv/bin/activate && python manage.py migrate",
     "create:superUser": "source .venv/bin/activate && python manage.py createsuperuser"
   },
