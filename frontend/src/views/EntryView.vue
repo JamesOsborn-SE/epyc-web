@@ -107,13 +107,13 @@ export default {
 </script>
 
 <template>
-  <div class="about">
-    <div v-if="entry && entry.sentence">
+  <div>
+    <div v-if="entry && entry.sentence" class="column">
       <h2>Draw this sentence</h2>
-      {{ entry.sentence }}
+      <p> {{ entry.sentence }} </p>
       <Paint @save="handleSaveImage" />
     </div>
-    <div v-if="entry && entry.drawing">
+    <div v-if="entry && entry.drawing" class="column">
       <h2>sentence this drawing</h2>
       <img style="width: 100%;" v-bind:src="imageData" alt="drawing" />
       <form :onsubmit="handleSentenceSave">
@@ -138,13 +138,3 @@ export default {
     </div>
   </div>
 </template>
-
-<style>
-@media (min-width: 1024px) {
-  .about {
-    min-height: 100vh;
-    display: flex;
-    align-items: center;
-  }
-}
-</style>
