@@ -6,6 +6,7 @@ from .models import Game, Entry
 
 from .serializers import GameSerializer, EntrySerializer
 
+
 class GameListApiView(APIView):
     permission_classes = [permissions.IsAuthenticated]
 
@@ -18,44 +19,46 @@ class GameListApiView(APIView):
     def get(self, request, game_id, *args, **kwargs):
         if game_id:
             game = self.get_object(game_id, request.user.id)
-            serializer = GameSerializer(game, many=False, context={'request': request})
+            serializer = GameSerializer(game, many=False, context={"request": request})
             return Response(serializer.data, status=status.HTTP_200_OK)
         else:
             games = Game.objects.filter(user=request.user.id)
-            serializer = GameSerializer(games, many=True, context={'request': request})
+            serializer = GameSerializer(games, many=True, context={"request": request})
             return Response(serializer.data, status=status.HTTP_200_OK)
 
     # 2. Create
     def post(self, request, *args, **kwargs):
-        '''
+        """
         Create the Game with given data
-        '''
-        data = {
-             'user': request.user.id
-        }
+        """
+        data = {"user": request.user.id}
         game_serializer = GameSerializer(data=data)
         if game_serializer.is_valid():
             game_serializer.save()
             entry_data = {
-                'user': request.user.id,
-                'sentence': request.data.get('sentence'),
-                'sequence': 0,
-                'drawing': None,
-                'game_id': game_serializer.data["id"],
+                "user": request.user.id,
+                "sentence": request.data.get("sentence"),
+                "sequence": 0,
+                "drawing": None,
+                "game_id": game_serializer.data["id"],
             }
             entry_serializer = EntrySerializer(data=entry_data)
             if entry_serializer.is_valid():
                 entry_serializer.save()
-                game_serializer.data["entries"] = [ entry_serializer.data ]
+                game_serializer.data["entries"] = [entry_serializer.data]
 
-            return Response({
-                'id': game_serializer.data["id"],
-                'created_at': game_serializer.data["created_at"],
-                'user': game_serializer.data["user"],
-                'entries': [entry_serializer.data]
-                }, status=status.HTTP_201_CREATED)
+            return Response(
+                {
+                    "id": game_serializer.data["id"],
+                    "created_at": game_serializer.data["created_at"],
+                    "user": game_serializer.data["user"],
+                    "entries": [entry_serializer.data],
+                },
+                status=status.HTTP_201_CREATED,
+            )
 
         return Response(game_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
 
 class EntryListApiView(APIView):
     permission_classes = [permissions.IsAuthenticated]
@@ -76,11 +79,11 @@ class EntryListApiView(APIView):
     # 2. Create
     def post(self, request, *args, **kwargs):
         data = {
-             'user': request.user.id,
-             'sentence': request.data.get('sentence'),
-             'drawing': request.data.get('drawing'),
-             'sequence': request.data.get('sequence'),
-             'game_id': request.data.get('game_id'),
+            "user": request.user.id,
+            "sentence": request.data.get("sentence"),
+            "drawing": request.data.get("drawing"),
+            "sequence": request.data.get("sequence"),
+            "game_id": request.data.get("game_id"),
         }
         serializer = EntrySerializer(data=data)
         if serializer.is_valid():
@@ -89,8 +92,10 @@ class EntryListApiView(APIView):
 
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+
 class GameEntriesListApiView(APIView):
     permission_classes = [permissions.IsAuthenticated]
+
     def get(self, request, game_id, *args, **kwargs):
         entries = Entry.objects.filter(game_id=game_id, user=request.user.id)
         serializer = EntrySerializer(entries, many=True)
