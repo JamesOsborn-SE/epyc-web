@@ -6,14 +6,31 @@ import { useGame } from '@/stores/game';
 import type { AxiosError } from "axios";
 import type { Entry } from "@/types/Entry";
 
-const entries = ref()
+const entries = ref<Entry[]>()
 const gameStore = ref()
+function getAllEntries(gameId: string | string[]) {
+  gameStore.value
+    .getEntries(gameId)
+    .then((g: Entry[]) => {
+      entries.value = g
+      console.log("game", g)
+    })
+    .catch((err: AxiosError) => {
+      if (err.response?.status == 401) {
+        router.push("/logout")
+      } else {
+        console.log(err)
+      }
+    })
+}
 
 export default {
   created() {
+
     this.$watch(
       () => this.$route.params,
       (toParams) => {
+        getAllEntries(toParams.id)
         gameStore.value
           .getEntries(toParams.id)
           .then((g: Entry[]) => {
@@ -32,33 +49,18 @@ export default {
   setup() {
     gameStore.value = useGame()
     const route = useRoute()
-
     onMounted(() => {
-      gameStore.value
-        .getEntries(route.params.id)
-        .then((g: Entry[]) => {
-            entries.value = g
-            console.log("game", g)
-          })
-          .catch((err: AxiosError) => {
-            if (err.response?.status == 401) {
-              router.push("/logout")
-            } else {
-              console.log(err)
-            }
-          })        
+      getAllEntries(route.params.id)
     })
   },
   data() {
     return { entries }
-  }
-
+  },
 }
 </script>
 
 <template>
-  <div class="about">
-    <div v-for="entry in entries">
+    <div v-for="entry in entries" class="column">
       <h2> turn {{ entry.sequence + 1 }}</h2>
       <div v-if="entry && entry.sentence">
         {{ entry.sentence }}
@@ -66,18 +68,8 @@ export default {
       <div v-if="entry && entry.drawing">
         <img style="width: 100%;" v-bind:src="entry.drawing" alt="drawing" />
       </div>
-      <br/>
-      <br/>
-    </div>    
-  </div>
+      <hr/>
+    </div>
 </template>
 
-<style>
-@media (min-width: 1024px) {
-  .about {
-    min-height: 100vh;
-    display: flex;
-    align-items: center;
-  }
-}
-</style>
+
