@@ -6,5 +6,5 @@ export class Entry {
         public game_id: string,
         public sequence: number,
         public sentence: string | null,
-        public drawing: string | ArrayBuffer | null) {}
+        public drawing: string | null) {}
 }
