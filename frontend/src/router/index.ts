@@ -3,6 +3,7 @@ import HomeView from '@/views/HomeView.vue'
 import LoginView from '@/views/LoginView.vue'
 import NewGameView from '@/views/NewGameView.vue'
 import GameView from '@/views/GameView.vue'
+import OldGamesView from '@/views/OldGamesView.vue'
 import EntryView from '@/views/EntryView.vue'
 import AboutView from '@/views/AboutView.vue'
 import LogoutView from '@/views/LogoutView.vue'
@@ -30,6 +31,11 @@ const router = createRouter({
       path: '/game/new',
       name: 'newGame',
       component: NewGameView
+    },
+    {
+      path: '/game/old',
+      name: 'oldGame',
+      component: OldGamesView
     },
     {
       path: '/game/:id',

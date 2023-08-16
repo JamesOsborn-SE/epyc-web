@@ -11,6 +11,7 @@ import { RouterLink, RouterView } from 'vue-router'
         <RouterLink to="/login">Login</RouterLink>
         <RouterLink to="/logout">Logout</RouterLink>
         <RouterLink to="/game/new">New Game</RouterLink>
+        <RouterLink to="/game/old">Old Games</RouterLink>
       </nav>
     </div>
   </header>
