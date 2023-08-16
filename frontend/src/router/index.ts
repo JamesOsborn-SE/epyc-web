@@ -6,6 +6,7 @@ import GameView from '@/views/GameView.vue'
 import EntryView from '@/views/EntryView.vue'
 import AboutView from '@/views/AboutView.vue'
 import LogoutView from '@/views/LogoutView.vue'
+import { useAuth } from '@/stores/auth'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -46,6 +47,20 @@ const router = createRouter({
       component: AboutView
     }
   ]
+})
+
+router.beforeEach(async (to, from) => {
+  const authStore = useAuth()
+  console.log(authStore.hasExpired)
+  if (
+    // make sure the user is authenticated
+    !authStore.isAuthenticated &&
+    // ❗️ Avoid an infinite redirect
+    to.name !== 'login'
+  ) {
+    // redirect the user to the login page
+    return { name: 'login' }
+  }
 })
 
 export default router

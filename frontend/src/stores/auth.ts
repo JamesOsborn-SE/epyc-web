@@ -19,6 +19,7 @@ export const useAuth = defineStore('auth', {
     }
   },
   getters: {
+    isAuthenticated: (state) => state && !state.hasExpired,
     getAccessToken: (state) => state.accessToken,
     getHeaders(state) {
       if (!state.hasExpired)
