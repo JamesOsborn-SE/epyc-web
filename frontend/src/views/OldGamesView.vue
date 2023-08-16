@@ -4,6 +4,7 @@ import router from '@/router'
 import { useGame } from '@/stores/game';
 import type { AxiosError } from "axios";
 import type { Game } from "@/types/Game";
+import GamePreview from "@/components/GamePreview.vue";
 
 const games = ref<Game[]>()
 const gameStore = ref()
@@ -30,6 +31,9 @@ export default {
       getGames()
     })
   },
+  components: {
+    GamePreview
+  },
   data() {
     return { games: games }
   },
@@ -38,18 +42,16 @@ export default {
 
 <template>
   <div v-for="game in games" class="column">
-    <h2> {{ game.created_at }}</h2>
     <router-link :to="{
       name: 'game',
       params: {
         id: game.id
       }
     }">
-      {{ game.id }}
+      <h2 class="column">Game Started: {{ game.created_at }}</h2>
+      <h2 class="column">Game Ended: {{ game.completed_at }}</h2>
+      <GamePreview :gameId=game.id />
     </router-link>
-    <p> {{ game.entries }} </p>
     <hr />
   </div>
 </template>
-
-

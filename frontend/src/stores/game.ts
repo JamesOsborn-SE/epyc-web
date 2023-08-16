@@ -28,6 +28,17 @@ export const useGame = defineStore('game', {
     } 
   },
   actions: {
+    async getLastImageEntry(gameId: string){
+      const authStore = useAuth()
+      return axios.get('http://127.0.0.1:8000/api/games/' + gameId + '/entries/lastImage', authStore.getHeaders)
+        .then(response => {
+          this.id = response.data.id
+          this.created_at = response.data.created_at
+          this.user = response.data.user
+          this.entries = [ response.data.entries as Entry ]
+          return response.data as Game
+        })// todo: add catches for 401,etc
+    },
     async getGames(){
       const authStore = useAuth()
       return axios.get('http://127.0.0.1:8000/api/games/', authStore.getHeaders)
