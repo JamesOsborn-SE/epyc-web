@@ -50,7 +50,7 @@ export default {
     }">
       <h2 class="column">Game Started: {{ game.created_at }}</h2>
       <h2 class="column">Game Ended: {{ game.completed_at }}</h2>
-      <GamePreview :gameId=game.id />
+      <GamePreview :gameId=game.id as string/>
     </router-link>
     <hr />
   </div>

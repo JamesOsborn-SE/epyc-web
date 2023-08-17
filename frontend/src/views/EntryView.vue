@@ -10,7 +10,6 @@ import Paint from "@/components/Paint.vue";
 const imageData = ref()
 const entry = ref()
 const gameStore = ref()
-let routeId = ""
 const sentence = ref(String())
 const isSubmitting = ref(false)
 const errors = ref([])
@@ -70,7 +69,7 @@ export default {
       reader.onloadend = function () {
         let base64data = reader.result;
         if (base64data) {
-          const newEntry = new Entry(null, null, null, entry.value.game_id, entry.value.sequence + 1, null, base64data)
+          const newEntry = new Entry(null, null, null, entry.value.game_id, entry.value.sequence + 1, null, base64data as string)
           gameStore.value
             .newEntry(newEntry)
             .then((e: Entry) => {
