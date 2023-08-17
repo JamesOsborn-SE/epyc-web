@@ -7,6 +7,9 @@
     "migrate:database": "source .venv/bin/activate && python manage.py migrate",
     "create:superUser": "source .venv/bin/activate && python manage.py createsuperuser"
   },
+  "workspaces":[
+    "frontend"
+  ],
   "devDependencies": {
     "vue-cli": "^2.9.6"
   }
