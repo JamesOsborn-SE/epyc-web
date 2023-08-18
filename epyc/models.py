@@ -10,7 +10,7 @@ class Game(models.Model):
         blank = False,
         null = False)
     created_at = models.DateField(auto_now_add=True)
-    completed_at = models.DateField(auto_now_add=False)
+    completed_at = models.DateField(auto_now_add=False, null=True)
 
 class Entry(models.Model):
     """A game entry
