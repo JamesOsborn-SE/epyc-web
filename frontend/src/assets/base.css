@@ -71,3 +71,21 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+
+h1{
+  margin-bottom: 1em;
+}
+
+label {
+  margin-top: 5em;
+  margin-left: 5em;
+  margin-right: 1em;
+}
+
+button {
+  margin: 2em;
+}
+
+input.long {
+  width: 50%;
+}

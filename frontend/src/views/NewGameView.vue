@@ -26,12 +26,11 @@ function onSubmit(event: Event) {
   <div>
     <h1>New Game</h1>
     <form :onsubmit="onSubmit">
-
       <div class="mb-3">
-        <label class="form-label">Sentence</label>
-        <input v-model="sentence" :required="true" pattern='(\p{L}+ +){3,}.*' title="four or more words">
+        <label>Sentence:</label>
+        <input class="long" v-model="sentence" :required="true" pattern='(\p{L}+ +){3,}.*' title="four or more words">
       </div>
-      <div class="mb-3">
+      <div>
         <button class="btn btn-primary" type="submit" value="submit" :disabled="isSubmitting">
           <span v-show="isSubmitting" class="spinner-border spinner-border-sm me-1"></span>
           Start new game

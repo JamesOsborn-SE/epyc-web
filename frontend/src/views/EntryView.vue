@@ -115,11 +115,11 @@ export default {
     <div v-if="entry && entry.drawing" class="column">
       <h2>sentence this drawing</h2>
       <img style="width: 100%;" v-bind:src="imageData" alt="drawing" />
-      <form :onsubmit="handleSentenceSave">
+      <form style="width: 100%;" :onsubmit="handleSentenceSave">
 
-        <div class="mb-3">
+        <div style="margin-top: 1em;">
           <label class="form-label">Sentence</label>
-          <input v-model="sentence" :required="true" pattern='(\p{L}+ +){3,}.*' title="four or more words and cannot start with a number">
+          <input class="long" v-model="sentence" :required="true" pattern='(\p{L}+ +){3,}.*' title="four or more words and cannot start with a number">
         </div>
         <div class="mb-3">
           <button class="btn btn-primary" type="submit" value="submit" :disabled="isSubmitting">
