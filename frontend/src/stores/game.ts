@@ -4,6 +4,8 @@ import { Entry } from "@/types/Entry";
 import { Game } from "@/types/Game";
 import { useAuth } from '@/stores/auth'
 
+const backendHostname=import.meta.env.VITE_BACKEND_HOSTNAME
+
 export const useGame = defineStore('game', {
   state: () => {
     if (localStorage.getItem('game') && localStorage.getItem('game') != "undefined") {
@@ -30,7 +32,7 @@ export const useGame = defineStore('game', {
   actions: {
     async getLastImageEntry(gameId: string){
       const authStore = useAuth()
-      return axios.get('http://127.0.0.1:8000/api/games/' + gameId + '/entries/lastImage', authStore.getHeaders)
+      return axios.get(backendHostname + '/api/games/' + gameId + '/entries/lastImage', authStore.getHeaders)
         .then(response => {
           this.id = response.data.id
           this.created_at = response.data.created_at
@@ -41,7 +43,7 @@ export const useGame = defineStore('game', {
     },
     async getGames(){
       const authStore = useAuth()
-      return axios.get('http://127.0.0.1:8000/api/games/', authStore.getHeaders)
+      return axios.get(backendHostname + '/api/games/', authStore.getHeaders)
         .then(response => {
           this.id = response.data.id
           this.created_at = response.data.created_at
@@ -52,7 +54,7 @@ export const useGame = defineStore('game', {
     },
     async newGame(sentence: string): Promise<Game> {
       const authStore = useAuth()
-      return axios.post('http://127.0.0.1:8000/api/games/', {
+      return axios.post(backendHostname + '/api/games/', {
         sentence: sentence
       }, authStore.getHeaders)
         .then(response => {
@@ -65,7 +67,7 @@ export const useGame = defineStore('game', {
     },
     async getEntries(gameId: string): Promise<Entry[]> {
       const authStore = useAuth()
-      return axios.get('http://127.0.0.1:8000/api/games/' + gameId + '/entries', authStore.getHeaders)
+      return axios.get(backendHostname + '/api/games/' + gameId + '/entries', authStore.getHeaders)
         .then(response => {
           this.id = response.data.id
           this.entries = response.data as Entry[]
@@ -74,7 +76,7 @@ export const useGame = defineStore('game', {
     },
     async getEntry(id: string): Promise<Entry> {
       const authStore = useAuth()
-      return axios.get('http://127.0.0.1:8000/api/entries/' + id, authStore.getHeaders)
+      return axios.get(backendHostname + '/api/entries/' + id, authStore.getHeaders)
         .then(response => {
           this.id = response.data.game_id
           this.entries = [ response.data as Entry ]
@@ -83,7 +85,7 @@ export const useGame = defineStore('game', {
     },
     async newEntry(entry: Entry): Promise<Array<Entry>> {
       const authStore = useAuth()
-      return axios.post('http://127.0.0.1:8000/api/entries/', entry, authStore.getHeaders)
+      return axios.post(backendHostname + '/api/entries/', entry, authStore.getHeaders)
         .then(response => {
           this.id = response.data.game_id
           this.entries = [response.data as Entry]

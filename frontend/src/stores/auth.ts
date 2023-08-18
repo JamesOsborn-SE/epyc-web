@@ -1,6 +1,8 @@
 import axios from 'axios'
 import { defineStore } from 'pinia'
 
+const backendHostname=import.meta.env.VITE_BACKEND_HOSTNAME
+
 export const useAuth = defineStore('auth', {
   state: () => {
     if (localStorage.getItem('auth') && localStorage.getItem('auth') != "undefined") {
@@ -11,10 +13,6 @@ export const useAuth = defineStore('auth', {
         refreshToken: null,
         refreshTokenTimeout: null,
         refreshTokenExpiresAt: null,
-        endpoints: {
-          obtainJWT: 'http://127.0.0.1:8000/api/token/',
-          refreshJWT: 'http://127.0.0.1:8000/api/token/refresh/'
-        }
       }
     }
   },
@@ -44,7 +42,7 @@ export const useAuth = defineStore('auth', {
       localStorage.setItem('auth','')
     },
     async login(username: string, password: string): Promise<void> {
-      const response = await axios.post(this.endpoints.obtainJWT,
+      const response = await axios.post(backendHostname + '/api/token/',
         {
           username: username,
           password: password
@@ -55,7 +53,7 @@ export const useAuth = defineStore('auth', {
       this.startRefreshTokenTimer()
     },
     async refreshAccessToken() {
-      await axios.post(this.endpoints.refreshJWT, {}, {
+      await axios.post(backendHostname + '/api/token/refresh/', {}, {
         headers: {
           'Authorization': 'Bearer ' + this.accessToken
         }
