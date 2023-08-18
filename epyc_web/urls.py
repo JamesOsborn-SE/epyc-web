@@ -27,6 +27,8 @@ from epyc.views import (
     GameLastImageEntry,
     GameEntriesListApiView,
 )
+from django.conf import settings
+from django.conf.urls.static import static
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -39,4 +41,5 @@ urlpatterns = [
     path('api/games/<uuid:game_id>/entries/lastImage', GameLastImageEntry.as_view()),
     path('api/entries/', EntryListApiView.as_view(), kwargs={'entry_id': None}),
     path('api/entries/<uuid:entry_id>', EntryListApiView.as_view()),
-]
+] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+
