@@ -5,11 +5,9 @@
 </template>
 
 <script lang="ts">
-import { ref } from "vue"
 import { useGame } from '@/stores/game';
 import type { Entry } from "@/types/Entry";
 
-const image = ref<string | undefined>()
 export default {
   name: 'GamePreview',
   props: {
@@ -20,7 +18,7 @@ export default {
   },
   data() {
     return {
-      image,
+      image: "",
     }
   },
   mounted() {
@@ -28,7 +26,7 @@ export default {
     gameStore
     .getLastImageEntry(this.gameId)
     .then((i: Entry)=>{
-      image.value = i.drawing as string
+      this.image = i.drawing as string
     })
   },
   methods: {
