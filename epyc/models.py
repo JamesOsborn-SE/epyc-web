@@ -9,8 +9,8 @@ class Game(models.Model):
         on_delete = models.CASCADE,
         blank = False,
         null = False)
-    created_at = models.DateField(auto_now_add=True)
-    completed_at = models.DateField(auto_now_add=False, null=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    completed_at = models.DateTimeField(auto_now_add=False, null=True)
 
 class Entry(models.Model):
     """A game entry
@@ -18,7 +18,7 @@ class Entry(models.Model):
         drawing: a base64 encoded string with the data type as a prefix
     """
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    created_at = models.DateField(auto_now_add=True)
+    created_at = models.DateTimeField(auto_now_add=True)
     user = models.ForeignKey(
         User, 
         on_delete = models.CASCADE,
