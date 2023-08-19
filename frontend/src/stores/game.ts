@@ -1,4 +1,4 @@
-import axios from 'axios'
+import axios, { AxiosError } from 'axios'
 import { defineStore } from 'pinia'
 import { Entry } from "@/types/Entry";
 import { Game } from "@/types/Game";
@@ -38,8 +38,15 @@ export const useGame = defineStore('game', {
           this.created_at = response.data.created_at
           this.user = response.data.user
           this.entries = [ response.data.entries as Entry ]
-          return response.data as Game
-        })// todo: add catches for 401,etc
+          return response.data as Entry
+        })
+        .catch((err: AxiosError) => {
+          if (err.response?.status == 500) {
+            return new Entry(null, null, null, gameId, 99, null, "/images/noimage.png")
+          } else {
+            console.log(err)
+          }
+        })
     },
     async getGames(){
       const authStore = useAuth()
