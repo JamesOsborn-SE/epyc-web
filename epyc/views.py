@@ -59,6 +59,39 @@ class GameListApiView(APIView):
 
         return Response(game_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+    # 3. Update
+    def put(self, request, *args, **kwargs):
+        """
+        Update the Game with given data
+        """
+        data = {"user": request.user.id}
+        game_serializer = GameSerializer(data=data)
+        if game_serializer.is_valid():
+            game_serializer.save()
+            entry_data = {
+                "user": request.user.id,
+                "sentence": request.data.get("sentence"),
+                "sequence": 0,
+                "drawing": None,
+                "game_id": game_serializer.data["id"],
+            }
+            entry_serializer = EntrySerializer(data=entry_data)
+            if entry_serializer.is_valid():
+                entry_serializer.save()
+                game_serializer.data["entries"] = [entry_serializer.data]
+
+            return Response(
+                {
+                    "id": game_serializer.data["id"],
+                    "created_at": game_serializer.data["created_at"],
+                    "user": game_serializer.data["user"],
+                    "entries": [entry_serializer.data],
+                },
+                status=status.HTTP_201_CREATED,
+            )
+
+        return Response(game_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
 
 class EntryListApiView(APIView):
     permission_classes = [permissions.IsAuthenticated]
@@ -109,7 +142,8 @@ class GameLastImageEntry(APIView):
         last_image_entry = (
             Entry.objects.filter(game_id=game_id, user=request.user.id)
             .exclude(drawing=None)
-            .order_by("created_at")[0]
+            .order_by("sequence")
+            .last()
         )
         serializer = EntrySerializer(last_image_entry, many=False)
         return Response(serializer.data, status=status.HTTP_200_OK)
