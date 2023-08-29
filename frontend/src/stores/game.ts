@@ -30,9 +30,10 @@ export const useGame = defineStore('game', {
     } 
   },
   actions: {
-    async getLastImageEntry(gameId: string){
+    async getLastEntry(gameId: string, onlyLastEntryWithImage: boolean){
+      const withImage = onlyLastEntryWithImage ? "image": ""
       const authStore = useAuth()
-      return axios.get(backendHostname + '/api/games/' + gameId + '/entries/lastImage', authStore.getHeaders)
+      return axios.get(backendHostname + '/api/games/' + gameId + '/entries/last' + withImage , authStore.getHeaders)
         .then(response => {
           this.id = response.data.id
           this.created_at = response.data.created_at

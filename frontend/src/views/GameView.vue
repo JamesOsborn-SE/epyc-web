@@ -47,16 +47,31 @@ export default {
 </script>
 
 <template>
-    <div v-for="entry in entries" class="column">
-      <h2> turn {{ entry.sequence + 1 }}</h2>
-      <div v-if="entry && entry.sentence">
-        {{ entry.sentence }}
-      </div>
-      <div v-if="entry && entry.drawing">
-        <img style="width: 100%;" v-bind:src="entry.drawing" alt="drawing" />
-      </div>
-      <hr/>
+  <div v-for="entry in entries" class="column">
+    <h2> turn {{ entry.sequence + 1 }}</h2>
+    <div v-if="entry && entry.sentence">
+      <p>
+        <router-link :to="{
+          name: 'entry',
+          params: {
+            id: entry.id
+          }
+        }"> {{ entry.sentence }}
+        </router-link>
+      </p>
     </div>
+    <div v-if="entry && entry.drawing">
+      <router-link :to="{
+        name: 'entry',
+        params: {
+          id: entry.id
+        }
+      }">
+        <img style="width: 100%;" v-bind:src="entry.drawing" alt="drawing" />
+      </router-link>
+    </div>
+    <hr />
+  </div>
 </template>
 
 

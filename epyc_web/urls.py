@@ -24,6 +24,7 @@ from django.urls import path
 from epyc.views import (
     GameListApiView,
     EntryListApiView,
+    GameLastEntry,
     GameLastImageEntry,
     GameEntriesListApiView,
 )
@@ -38,6 +39,7 @@ urlpatterns = [
     path('api/games/', GameListApiView.as_view(), kwargs={'game_id': None}),
     path('api/games/<uuid:game_id>', GameListApiView.as_view()),
     path('api/games/<uuid:game_id>/entries', GameEntriesListApiView.as_view()),
+    path('api/games/<uuid:game_id>/entries/last', GameLastEntry.as_view()),
     path('api/games/<uuid:game_id>/entries/lastImage', GameLastImageEntry.as_view()),
     path('api/entries/', EntryListApiView.as_view(), kwargs={'entry_id': None}),
     path('api/entries/<uuid:entry_id>', EntryListApiView.as_view()),

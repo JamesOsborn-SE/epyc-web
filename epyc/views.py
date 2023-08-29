@@ -147,3 +147,16 @@ class GameLastImageEntry(APIView):
         )
         serializer = EntrySerializer(last_image_entry, many=False)
         return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+class GameLastEntry(APIView):
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get(self, request, game_id, *args, **kwargs):
+        last_image_entry = (
+            Entry.objects.filter(game_id=game_id, user=request.user.id)
+            .order_by("sequence")
+            .last()
+        )
+        serializer = EntrySerializer(last_image_entry, many=False)
+        return Response(serializer.data, status=status.HTTP_200_OK)

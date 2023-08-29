@@ -13,7 +13,6 @@ function getGames() {
     .getGames()
     .then((g: Game[]) => {
       games.value = g
-      console.log("game", g)
     })
     .catch((err: AxiosError) => {
       if (err.response?.status == 401) {
@@ -49,8 +48,20 @@ export default {
       }
     }">
       <h2 class="column">Game Started: {{ game.created_at }}</h2>
-      <h2 class="column">Game Ended: {{ game.completed_at }}</h2>
-      <GamePreview :gameId=game.id as string/>
+      <h2 v-if="game.completed_at" class="column">Game Ended: {{ game.completed_at }}</h2>
+      <div v-if="game.completed_at">
+        <GamePreview :gameId=game.id as string />
+      </div>
+      <div v-else>
+        <router-link :to="{
+          name: 'continueGame',
+          params: {
+            id: game.id
+          }
+        }">
+          <p>continue Game</p>
+        </router-link>
+      </div>
     </router-link>
     <hr />
   </div>
