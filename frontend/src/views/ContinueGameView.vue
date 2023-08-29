@@ -11,7 +11,6 @@ export default {
   mounted() {
     const gameStore = useGame()
     const route = useRoute()
-    debugger;
     gameStore
       .getLastEntry(route.params.id)
       .then((i: Entry) => {
