@@ -27,6 +27,7 @@ from epyc.views import (
     GameLastEntry,
     GameLastImageEntry,
     GameEntriesListApiView,
+    GameEndApiView,
 )
 from django.conf import settings
 from django.conf.urls.static import static
@@ -38,6 +39,7 @@ urlpatterns = [
     path('api/token/verify/', TokenVerifyView.as_view(), name='token_verify'),
     path('api/games/', GameListApiView.as_view(), kwargs={'game_id': None}),
     path('api/games/<uuid:game_id>', GameListApiView.as_view()),
+    path('api/games/<uuid:game_id>/end', GameEndApiView.as_view()),
     path('api/games/<uuid:game_id>/entries', GameEntriesListApiView.as_view()),
     path('api/games/<uuid:game_id>/entries/last', GameLastEntry.as_view()),
     path('api/games/<uuid:game_id>/entries/lastImage', GameLastImageEntry.as_view()),

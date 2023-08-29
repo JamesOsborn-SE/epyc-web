@@ -3,6 +3,7 @@ from rest_framework.response import Response
 from rest_framework import status
 from rest_framework import permissions
 from .models import Game, Entry
+from datetime import datetime
 
 from .serializers import GameSerializer, EntrySerializer
 
@@ -160,3 +161,14 @@ class GameLastEntry(APIView):
         )
         serializer = EntrySerializer(last_image_entry, many=False)
         return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+class GameEndApiView(APIView):
+    permission_classes = [permissions.IsAuthenticated]
+
+    def post(self, request, game_id, *args, **kwargs):
+        print(game_id)
+        game = Game.objects.filter(id=game_id, user=request.user.id)
+        game.update(completed_at=datetime.now())
+
+        return Response(game_id, status=status.HTTP_200_OK)

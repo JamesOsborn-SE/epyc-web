@@ -106,6 +106,11 @@ export const useGame = defineStore('game', {
           this.entries = [response.data as Entry]
           return response.data as Array<Entry>
         })// todo: add catches for 401,etc
+    },
+    async endGame(gameId: string) {
+      const authStore = useAuth()
+      return axios.post(backendHostname + '/api/games/' + gameId + '/end', {}, authStore.getHeaders)
+      // todo: add catches for 401,etc
     }
   }
 })

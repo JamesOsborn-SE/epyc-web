@@ -15,27 +15,27 @@ const isSubmitting = ref(false)
 const errors = ref([])
 
 export default {
-  created(){
+  created() {
     this.$watch(
       () => this.$route.params,
       (toParams) => {
         gameStore.value
-        .getEntry(toParams.id)
-        .then((e: Entry) => {
-          entry.value = e
-          console.log("entry", e)
-          imageData.value = "" + e.drawing
-        })
-        .catch((err: AxiosError) => {
-          if (err.response?.status == 401) {
-            router.push("/logout")
-          } else {
-            console.log(err)
-          }
-        })
+          .getEntry(toParams.id)
+          .then((e: Entry) => {
+            entry.value = e
+            console.log("entry", e)
+            imageData.value = "" + e.drawing
+          })
+          .catch((err: AxiosError) => {
+            if (err.response?.status == 401) {
+              router.push("/logout")
+            } else {
+              console.log(err)
+            }
+          })
       })
   },
-  setup(props) {
+  setup() {
     gameStore.value = useGame()
     const route = useRoute()
 
@@ -91,6 +91,13 @@ export default {
           router.push({ name: 'entry', params: { id: entryId } })
         })
       isSubmitting.value = false
+    },
+    endGame(event: Event){
+      gameStore.value
+      .endGame(entry.value.game_id)
+      .then(() => {
+        router.push({ name: 'game', params: { id: entry.value.game_id } })
+      })
     }
   },
   data() {
@@ -119,7 +126,8 @@ export default {
 
         <div style="margin-top: 1em;">
           <label class="form-label">Sentence</label>
-          <input class="long" v-model="sentence" :required="true" pattern='(\p{L}+ +){3,}.*' title="four or more words and cannot start with a number">
+          <input class="long" v-model="sentence" :required="true" pattern='(\p{L}+ +){3,}.*'
+            title="four or more words and cannot start with a number">
         </div>
         <div class="mb-3">
           <button class="btn btn-primary" type="submit" value="submit" :disabled="isSubmitting">
@@ -134,6 +142,10 @@ export default {
         </ul>
         </p>
       </form>
+      <button class="btn btn-secondary" type="submit" value="endGame" :disabled="isSubmitting" :onclick="endGame">
+        <span v-show="isSubmitting" class="spinner-border spinner-border-sm me-1"></span>
+        End Game For All
+      </button>
     </div>
   </div>
 </template>

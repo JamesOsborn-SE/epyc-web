@@ -5,7 +5,7 @@ import uuid
 class Game(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     user = models.ForeignKey(
-        User, 
+        User,
         on_delete = models.CASCADE,
         blank = False,
         null = False)
