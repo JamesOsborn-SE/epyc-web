@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '@/views/HomeView.vue'
 import LoginView from '@/views/LoginView.vue'
 import NewGameView from '@/views/NewGameView.vue'
+import ContinueGameView from '@/views/ContinueGameView.vue'
 import GameView from '@/views/GameView.vue'
 import OldGamesView from '@/views/OldGamesView.vue'
 import EntryView from '@/views/EntryView.vue'
@@ -41,6 +42,11 @@ const router = createRouter({
       path: '/game/:id',
       name: 'game',
       component: GameView
+    },
+    {
+      path: '/game/:id/continue',
+      name: 'continueGame',
+      component: ContinueGameView
     },
     {
       path: '/entry/:id',

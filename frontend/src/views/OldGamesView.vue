@@ -41,14 +41,8 @@ export default {
 
 <template>
   <div v-for="game in games" class="column">
-    <router-link :to="{
-      name: 'game',
-      params: {
-        id: game.id
-      }
-    }">
-      <h2 class="column">Game Started: {{ game.created_at }}</h2>
-      <h2 v-if="game.completed_at" class="column">Game Ended: {{ game.completed_at }}</h2>
+    <h2 class="column">Game Started: {{ game.created_at }}</h2>
+    <h2 v-if="game.completed_at" class="column">Game Ended: {{ game.completed_at }}</h2>
       <div v-if="game.completed_at">
         <GamePreview :gameId=game.id as string />
       </div>
@@ -59,10 +53,9 @@ export default {
             id: game.id
           }
         }">
-          <p>continue Game</p>
+          continue Game
         </router-link>
       </div>
-    </router-link>
     <hr />
   </div>
 </template>

@@ -1,6 +1,16 @@
 <template>
   <div class="column">
-    <img :src="image" alt="a drawing" class="thumbnail"/>
+    <router-link class="column"
+    :to="{
+      name: 'game',
+      params: {
+        id: gameId
+      },
+    }">
+      <p>View Game</p>
+      <img :src="image" alt="a drawing" class="thumbnail" />
+    </router-link>
+
   </div>
 </template>
 
@@ -19,28 +29,27 @@ export default {
   data() {
     return {
       image: "",
+      gameId: this.gameId,
     }
   },
   mounted() {
     const gameStore = useGame()
     gameStore
-    .getLastImageEntry(this.gameId)
-    .then((i: Entry)=>{
-      this.image = i.drawing as string
-    })
+      .getLastEntry(this.gameId, true)
+      .then((i: Entry) => {
+        this.image = i.drawing as string
+      })
   },
   methods: {
 
-  }
+  },
 }
 
 </script>
 
 <style>
-
-.thumbnail{
+.thumbnail {
   align-self: center;
   width: 30%;
 }
-
 </style>
