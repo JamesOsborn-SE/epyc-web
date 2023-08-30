@@ -19,6 +19,8 @@ export default {
     this.$watch(
       () => this.$route.params,
       (toParams) => {
+        sentence.value = ""
+        imageData.value = null
         gameStore.value
           .getEntry(toParams.id)
           .then((e: Entry) => {

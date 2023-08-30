@@ -8,6 +8,9 @@ const emit = defineEmits(['save'])
 
 <template>
   <div id="painterro" class="paint"></div>
+  <button class="btn btn-primary" type="submit" value="submit" :onclick="add_blob_from_drawing">    
+    Submit Drawing
+  </button>
 </template>
 
 <script lang="ts">
@@ -17,7 +20,7 @@ export default {
   data() {
     return {
       painterro: null,
-      imageBlob: Blob,
+      imageBlob: null,
     }
   },
   mounted() {
@@ -28,7 +31,7 @@ export default {
         control: '#d5d5d5',
         controlContent: '#434649'
       },
-      hiddenTools: ['crop', 'select', 'text', 'rotate', 'resize', 'open', 'close', 'zoomin', 'zoomout', 'settings', 'pixelize', 'file'],
+      hiddenTools: ['crop', 'select', 'text', 'rotate', 'resize', 'open', 'close', 'zoomin', 'zoomout', 'settings', 'pixelize', 'file', 'save'],
       defaultTool: 'brush',
       defaultLineWidth: 8,
       activeColor: '#000000',
@@ -40,8 +43,8 @@ export default {
         const blob = image.asBlob(mimePng)
         this.add_blob(blob)
         done(true)
-      }
-    })
+      }, 
+     })
     this.painterro = paint
     paint.show()
   },
@@ -51,6 +54,9 @@ export default {
         type: mimePng,
       });
       this.$emit('save', blob)
+    },
+    add_blob_from_drawing() {
+      this.painterro.save();
     }
   }
 }
