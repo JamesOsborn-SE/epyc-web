@@ -63,7 +63,6 @@ const router = createRouter({
 
 router.beforeEach(async (to, from) => {
   const authStore = useAuth()
-  console.log(authStore.hasExpired)
   if (
     // make sure the user is authenticated
     !authStore.isAuthenticated &&

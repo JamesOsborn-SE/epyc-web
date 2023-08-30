@@ -12,7 +12,6 @@ const errors = ref([])
 function onSubmit(event: Event) {
   isSubmitting.value = true
   event.preventDefault()
-  console.log("sentence", sentence.value)
   gameStore.newGame(sentence.value).then((game: Game) => {
     const firstEntry = game.entries[0].id 
     router.push({ name: 'entry', params: { id: firstEntry} })

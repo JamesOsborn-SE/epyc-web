@@ -13,7 +13,6 @@ function getAllEntries(gameId: string | string[]) {
     .getEntries(gameId)
     .then((g: Entry[]) => {
       entries.value = g
-      console.log("game", g)
     })
     .catch((err: AxiosError) => {
       if (err.response?.status == 401) {

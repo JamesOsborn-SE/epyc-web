@@ -23,7 +23,6 @@ export default {
           .getEntry(toParams.id)
           .then((e: Entry) => {
             entry.value = e
-            console.log("entry", e)
             imageData.value = "" + e.drawing
           })
           .catch((err: AxiosError) => {
@@ -44,7 +43,6 @@ export default {
         .getEntry(route.params.id)
         .then((e: Entry) => {
           entry.value = e
-          console.log("entry", e)
           imageData.value = "" + e.drawing
         })
         .catch((err: AxiosError) => {
@@ -82,7 +80,6 @@ export default {
     handleSentenceSave(event: Event) {
       isSubmitting.value = true
       event.preventDefault()
-      console.log("sentence", sentence.value)
       const newEntry = new Entry(null, null, null, entry.value.game_id, entry.value.sequence + 1, sentence.value, null)
       gameStore.value
         .newEntry(newEntry)
