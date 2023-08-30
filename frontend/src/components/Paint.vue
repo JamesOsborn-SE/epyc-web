@@ -19,8 +19,7 @@ export default {
   name: 'Paint',
   data() {
     return {
-      painterro: null,
-      imageBlob: null,
+      painterro: Painterro,
     }
   },
   mounted() {
@@ -56,7 +55,8 @@ export default {
       this.$emit('save', blob)
     },
     add_blob_from_drawing() {
-      this.painterro.save();
+      if(this.painterro)
+        this.painterro.save();
     }
   }
 }
