@@ -30,6 +30,12 @@ export default {
       getGames()
     })
   },
+  methods: {
+    formatDate(dateString: string) {
+      const date = new Date(dateString);
+      return new Intl.DateTimeFormat('default', { dateStyle: 'short', timeStyle: 'short' }).format(date);
+    }
+  },
   components: {
     GamePreview
   },
@@ -41,21 +47,21 @@ export default {
 
 <template>
   <div v-for="game in games" class="column">
-    <h2 class="column">Game Started: {{ game.created_at }}</h2>
-    <h2 v-if="game.completed_at" class="column">Game Ended: {{ game.completed_at }}</h2>
-      <div v-if="game.completed_at">
-        <GamePreview :gameId=game.id as string />
-      </div>
-      <div v-else>
-        <router-link :to="{
-          name: 'continueGame',
-          params: {
-            id: game.id
-          }
-        }">
-          continue Game
-        </router-link>
-      </div>
+    <p class="column">Game Started: {{ formatDate(game.created_at.toString()) }}</p>
+    <p v-if="game.completed_at" class="column">Game Ended: {{ formatDate(game.completed_at.toString()) }}</p>
+    <div v-if="game.completed_at">
+      <GamePreview :gameId=game.id as string />
+    </div>
+    <div v-else>
+      <router-link :to="{
+        name: 'continueGame',
+        params: {
+          id: game.id
+        }
+      }">
+        Continue Game
+      </router-link>
+    </div>
     <hr />
   </div>
 </template>
