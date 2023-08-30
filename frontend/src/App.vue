@@ -11,11 +11,10 @@ const userStore = useAuth()
       <p> you are logged in as {{ userStore.username }}</p>
       <nav>
         <RouterLink to="/">Home</RouterLink>
-        <RouterLink to="/about">About</RouterLink>
-        <RouterLink to="/login">Login</RouterLink>
-        <RouterLink to="/logout">Logout</RouterLink>
         <RouterLink to="/game/new">New Game</RouterLink>
         <RouterLink to="/game/old">Old Games</RouterLink>
+        <RouterLink v-if="!userStore.isAuthenticated" to="/login">Login</RouterLink>
+        <RouterLink v-if="userStore.isAuthenticated" to="/logout">Logout</RouterLink>
       </nav>
     </div>
   </header>
