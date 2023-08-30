@@ -167,7 +167,6 @@ class GameEndApiView(APIView):
     permission_classes = [permissions.IsAuthenticated]
 
     def post(self, request, game_id, *args, **kwargs):
-        print(game_id)
         game = Game.objects.filter(id=game_id, user=request.user.id)
         game.update(completed_at=datetime.now())
 
