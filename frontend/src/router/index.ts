@@ -8,7 +8,7 @@ import OldGamesView from '@/views/OldGamesView.vue'
 import EntryView from '@/views/EntryView.vue'
 import AboutView from '@/views/AboutView.vue'
 import LogoutView from '@/views/LogoutView.vue'
-import { useAuth } from '@/stores/auth'
+import { useAuth } from '@/stores/auth.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
