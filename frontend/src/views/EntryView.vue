@@ -139,10 +139,10 @@ export default {
         </ul>
         </p>
       </form>
-      <button class="btn btn-secondary" type="submit" value="endGame" :disabled="isSubmitting" :onclick="endGame">
-        <span v-show="isSubmitting" class="spinner-border spinner-border-sm me-1"></span>
-        End Game For All
-      </button>
     </div>
+    <button class="btn btn-secondary" type="submit" value="endGame" :disabled="isSubmitting" :onclick="endGame">
+      <span v-show="isSubmitting" class="spinner-border spinner-border-sm me-1"></span>
+      End Game For All
+    </button>
   </div>
 </template>
