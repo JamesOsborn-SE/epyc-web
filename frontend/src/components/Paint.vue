@@ -8,7 +8,8 @@ const emit = defineEmits(['save'])
 
 <template>
   <div id="painterro" class="paint"></div>
-  <button class="btn btn-primary" type="submit" value="submit" :onclick="add_blob_from_drawing">    
+  <div class="paint-toolbar-scroll">&lt-- youz can scroll toolbar --&gt</div>
+  <button class="btn btn-primary" type="submit" value="submit" :onclick="add_blob_from_drawing">
     Submit Drawing
   </button>
 </template>
@@ -42,8 +43,8 @@ export default {
         const blob = image.asBlob(mimePng)
         this.add_blob(blob)
         done(true)
-      }, 
-     })
+      },
+    })
     this.painterro = paint
     paint.show()
   },
@@ -55,7 +56,7 @@ export default {
       this.$emit('save', blob)
     },
     add_blob_from_drawing() {
-      if(this.painterro)
+      if (this.painterro)
         this.painterro.save();
     }
   }
@@ -88,5 +89,15 @@ a {
   align-self: center;
   height: calc(min(80vh, 80vw) + 40px);
   width: min(80vh, 80vw);
+}
+
+.paint-toolbar-scroll {
+  display: none;
+}
+
+@media screen and (max-width: 666px) {
+  .paint-toolbar-scroll {
+    display: block;
+  }
 }
 </style>
