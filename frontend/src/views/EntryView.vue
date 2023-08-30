@@ -123,7 +123,7 @@ export default {
       <img style="width: 100%;" v-bind:src="imageData" alt="drawing" />
       <form style="width: 100%;" :onsubmit="handleSentenceSave">
 
-        <div style="margin-top: 1em;">
+        <div class="mb-3" style="margin-top: 1em;">
           <label class="form-label">Sentence</label>
           <input class="long" v-model="sentence" :required="true" pattern='(\p{L}+ +){3,}.*'
             title="four or more words and cannot start with a number">

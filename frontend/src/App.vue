@@ -7,14 +7,12 @@ const userStore = useAuth()
 <template>
   <header>
     <div>
-      <h1>Eat Poop You Cat</h1>
-      <p> you are logged in as {{ userStore.username }}</p>
       <nav>
         <RouterLink to="/">Home</RouterLink>
-        <RouterLink to="/game/new">New Game</RouterLink>
-        <RouterLink to="/game/old">Old Games</RouterLink>
+        <RouterLink to="/game/new">New</RouterLink>
+        <RouterLink to="/game/old">Old</RouterLink>
         <RouterLink v-if="!userStore.isAuthenticated" to="/login">Login</RouterLink>
-        <RouterLink v-if="userStore.isAuthenticated" to="/logout">Logout</RouterLink>
+        <RouterLink v-if="userStore.isAuthenticated" to="/logout">Logout {{ userStore.username }}</RouterLink>
       </nav>
     </div>
   </header>
@@ -37,7 +35,6 @@ nav {
   width: 100%;
   font-size: 12px;
   text-align: center;
-  margin-top: 2rem;
 }
 
 nav a.router-link-exact-active {

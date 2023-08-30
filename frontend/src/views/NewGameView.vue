@@ -26,7 +26,7 @@ function onSubmit(event: Event) {
     <h1>New Game</h1>
     <form :onsubmit="onSubmit">
       <div class="mb-3">
-        <label>Sentence:</label>
+        <label>Sentence</label>
         <input class="long" v-model="sentence" :required="true" pattern='(\p{L}+ +){3,}.*' title="four or more words">
       </div>
       <div>
