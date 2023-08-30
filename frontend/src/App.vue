@@ -1,10 +1,14 @@
 <script setup lang="ts">
 import { RouterLink, RouterView } from 'vue-router'
+import { useAuth } from './stores/auth';
+const userStore = useAuth()
 </script>
 
 <template>
   <header>
     <div>
+      <h1>Eat Poop You Cat</h1>
+      <p> you are logged in as {{ userStore.username }}</p>
       <nav>
         <RouterLink to="/">Home</RouterLink>
         <RouterLink to="/about">About</RouterLink>

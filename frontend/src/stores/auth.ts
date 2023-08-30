@@ -9,6 +9,7 @@ export const useAuth = defineStore('auth', {
       return JSON.parse(localStorage.getItem('auth')!!)
     } else {
       return {
+        username: null,
         accessToken: null,
         refreshToken: null,
         refreshTokenTimeout: null,
@@ -48,6 +49,7 @@ export const useAuth = defineStore('auth', {
           password: password
         }
       )
+      this.username = username
       this.accessToken = response.data.access
       this.refreshToken = response.data.refresh
       this.startRefreshTokenTimer()
