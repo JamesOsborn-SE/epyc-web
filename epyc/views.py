@@ -180,7 +180,8 @@ class GameEndApiView(APIView):
 class OneTimeUseAccessView(APIView):
     def post(self, request, code, *args, **kwargs):
         data = OneTimeUseCode.objects.filter(code=code).first()
-        if data:
+        expiration = data.created_at + data.expires_in
+        if data and expiration.timestamp() > datetime.now().timestamp():
             user = data.user
             token = AccessToken.for_user(user=user)
             payload = {
