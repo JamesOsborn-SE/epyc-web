@@ -207,5 +207,6 @@ class OneTimeUseAccessView(APIView):
         print(data)
         serializer = OneTimeUseCodeSerializer(data=data)
         if serializer.is_valid():
+            serializer.save()
             return Response(serializer.data, status=status.HTTP_200_OK)
         return Response(serializer.errors, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
