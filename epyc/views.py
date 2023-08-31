@@ -9,12 +9,8 @@ import secrets
 
 from .serializers import GameSerializer, EntrySerializer, OneTimeUseCodeSerializer
 
-from rest_framework_simplejwt.views import (
-    TokenObtainPairView,
-    TokenRefreshView,
-    TokenVerifyView)
-
 from rest_framework_simplejwt.tokens import AccessToken
+
 
 class GameListApiView(APIView):
     permission_classes = [permissions.IsAuthenticated]
@@ -180,24 +176,26 @@ class GameEndApiView(APIView):
 
         return Response(game_id, status=status.HTTP_200_OK)
 
+
 class OneTimeUseAccessView(APIView):
-    
     def post(self, request, code, *args, **kwargs):
         data = OneTimeUseCode.objects.filter(code=code).first()
         if data:
             user = data.user
             token = AccessToken.for_user(user=user)
             payload = {
-                "token": str(token),
-                "token_type": token["token_type"],
-                "exp": token["exp"],
-                "user_id": token["user_id"],
+                "token": {
+                    "token": str(token),
+                    "token_type": token["token_type"],
+                    "exp": token["exp"],
+                    "user_id": token["user_id"],
+                },
                 "user_name": user.username,
-                "path": "/api/entries/" + str(data.entry.id)
+                "path": "/api/entries/" + str(data.entry.id),
             }
             return Response(payload, status=status.HTTP_200_OK)
         return Response("invalid code", status=status.HTTP_404_NOT_FOUND)
-    
+
     def get(self, request, *args, **kwargs):
         if not permissions.IsAuthenticated:
             return
