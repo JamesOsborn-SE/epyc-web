@@ -2,11 +2,19 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework import permissions
-from .models import Game, Entry
+from .models import Game, Entry, OneTimeUseCode
 from datetime import datetime
 
-from .serializers import GameSerializer, EntrySerializer
+import secrets
 
+from .serializers import GameSerializer, EntrySerializer, OneTimeUseCodeSerializer
+
+from rest_framework_simplejwt.views import (
+    TokenObtainPairView,
+    TokenRefreshView,
+    TokenVerifyView)
+
+from rest_framework_simplejwt.tokens import AccessToken
 
 class GameListApiView(APIView):
     permission_classes = [permissions.IsAuthenticated]
@@ -171,3 +179,36 @@ class GameEndApiView(APIView):
         game.update(completed_at=datetime.now())
 
         return Response(game_id, status=status.HTTP_200_OK)
+
+class OneTimeUseAccessView(APIView):
+    
+    def post(self, request, code, *args, **kwargs):
+        data = OneTimeUseCode.objects.filter(code=code).first()
+        if data:
+            user = data.user
+            token = AccessToken.for_user(user=user)
+            payload = {
+                "token": str(token),
+                "token_type": token["token_type"],
+                "exp": token["exp"],
+                "user_id": token["user_id"],
+                "user_name": user.username,
+                "path": "/api/entries/" + str(data.entry.id)
+            }
+            return Response(payload, status=status.HTTP_200_OK)
+        return Response("invalid code", status=status.HTTP_404_NOT_FOUND)
+    
+    def get(self, request, *args, **kwargs):
+        if not permissions.IsAuthenticated:
+            return
+        data = {
+            "user": request.user.id,
+            "game_id": request.data.get("game_id"),
+            "entry_id": request.data.get("entry_id"),
+            "code": secrets.token_urlsafe(12),
+        }
+        print(data)
+        serializer = OneTimeUseCodeSerializer(data=data)
+        if serializer.is_valid():
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        return Response(serializer.errors, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
