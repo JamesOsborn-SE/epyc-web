@@ -4,6 +4,33 @@
 import Painterro from 'painterro'
 const emit = defineEmits(['save'])
 
+function overLoadTouchMove(e: TouchEvent) {
+  const paint = document.getElementById('painterro')
+  if (!paint) {
+    return;
+  }
+  const scrollTop = document.getElementsByTagName("html")[0].scrollTop 
+  const paintStartX = paint.offsetLeft
+  const paintEndX = paintStartX + paint.offsetWidth
+  const paintStartY = paint.offsetTop - scrollTop
+  const paintEndY = paintStartY + paint.offsetHeight
+  // debugger
+  const x = e.touches[0].clientX
+  const y = e.touches[0].clientY
+
+  if (x > paintStartX
+    && x < paintEndX
+    && y > paintStartY
+    && y < paintEndY) {
+    return
+  }
+
+  e.stopPropagation();
+}
+
+const html = document.getElementsByTagName('html');
+html[0].addEventListener('touchmove', overLoadTouchMove);
+
 </script>
 
 <template>
