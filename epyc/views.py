@@ -201,8 +201,7 @@ class OneTimeUseAccessView(APIView):
             return
         data = {
             "user": request.user.id,
-            "game_id": request.data.get("game_id"),
-            "entry_id": request.data.get("entry_id"),
+            "entry": request.data.get("entry_id"),
             "code": secrets.token_urlsafe(12),
         }
         print(data)
