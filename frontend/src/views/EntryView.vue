@@ -1,11 +1,12 @@
 <script lang="ts">
 import { onMounted, ref } from "vue"
-import { useRoute } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 import router from '@/router'
 import { useGame } from '@/stores/game';
 import { Entry } from '@/types/Entry';
 import type { AxiosError } from "axios";
 import Paint from "@/components/Paint.vue";
+import { useAuth } from "@/stores/auth";
 
 const imageData = ref()
 const entry = ref()
@@ -13,6 +14,7 @@ const gameStore = ref()
 const sentence = ref(String())
 const isSubmitting = ref(false)
 const errors = ref([])
+const path = ref("")
 
 export default {
   created() {
@@ -39,7 +41,7 @@ export default {
   setup() {
     gameStore.value = useGame()
     const route = useRoute()
-
+    path.value = route.fullPath
     onMounted(() => {
       gameStore.value
         .getEntry(route.params.id)
@@ -91,12 +93,44 @@ export default {
         })
       isSubmitting.value = false
     },
-    endGame(event: Event){
+    endGame(event: Event) {
       gameStore.value
-      .endGame(entry.value.game_id)
-      .then(() => {
-        router.push({ name: 'game', params: { id: entry.value.game_id } })
-      })
+        .endGame(entry.value.game_id)
+        .then(() => {
+          router.push({ name: 'game', params: { id: entry.value.game_id } })
+        })
+    },
+    async shareThis(event: Event) {
+      const auth = useAuth()
+      const code = await auth.getCode(path)
+      const shareData = {
+        title: "Invite friends",
+        text: "Invite friends to play Eat Poop You Cat!",
+        url: `https://${location.host}/login?code=${code}`,
+      }
+      try {
+        await navigator.share(shareData);
+        console.log("shared successfully")
+      } catch (err) {
+        console.log("share err", err);
+      }
+    },
+    canShare(): boolean {
+      const canShare = 'share' in window.navigator;
+      return canShare
+    },
+    async copyToClipboard() {
+      const auth = useAuth()
+      const code = await auth.getCode(path.value)
+      const url = `https://${location.host}/login?code=${code}`
+      navigator.clipboard.writeText(url).then(
+        () => {
+          console.log("clipboard successfully set")
+        },
+        () => {
+          console.log("clipboard write failed")
+        },
+      );
     }
   },
   data() {
@@ -114,6 +148,14 @@ export default {
 <template>
   <div>
     <div v-if="entry && entry.sentence" class="column">
+      <button v-if="canShare()" class="btn btn-secondary" value="shareThis" :disabled="isSubmitting" :onclick="shareThis">
+        <span v-show="isSubmitting" class="spinner-border spinner-border-sm me-1"></span>
+        share
+      </button>
+      <button v-if="!canShare()" class="btn btn-secondary" value="shareThis" :disabled="isSubmitting" :onclick="copyToClipboard">
+        <span v-show="isSubmitting" class="spinner-border spinner-border-sm me-1"></span>
+        copy to clipboard
+      </button>
       <h2>Draw this sentence</h2>
       <p> {{ entry.sentence }} </p>
       <Paint @save="handleSaveImage" />
