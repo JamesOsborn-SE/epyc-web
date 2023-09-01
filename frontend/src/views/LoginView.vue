@@ -36,8 +36,8 @@ async function onSubmit(event: Event) {
 }
 onMounted(() => {
     if (code) {
-        authStore.getAuthFromCode(code).then((e: string) => {
-            router.push({ name: 'entry', params: { id: e } })
+        authStore.getAuthFromCode(code).then((path: string) => {
+            router.push(path)
         })
     }
 })
