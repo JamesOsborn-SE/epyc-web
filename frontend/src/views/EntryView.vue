@@ -43,12 +43,12 @@ export default {
     const toast = useToast();
     gameStore.value = useGame()
     const route = useRoute()
-    path.value = route.fullPath
     onMounted(() => {
       gameStore.value
         .getEntry(route.params.id)
         .then((e: Entry) => {
           entry.value = e
+          path.value = `/game/${e.game_id}/continue`
           imageData.value = "" + e.drawing
         })
         .catch((err: AxiosError) => {
@@ -168,7 +168,7 @@ export default {
 </script>
 
 <template>
-  <div>
+  <div class="container">
     <button v-if="canShare()" class="btn btn-secondary" value="shareThis" :disabled="isSubmitting" :onclick="shareThis">
       <span v-show="isSubmitting" class="spinner-border spinner-border-sm me-1"></span>
       share
@@ -212,3 +212,11 @@ export default {
     </button>
   </div>
 </template>
+
+<style scoped>
+.container{
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+</style>
