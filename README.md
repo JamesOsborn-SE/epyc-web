@@ -1,5 +1,9 @@
 # Eat Poop You Cat Web
 
+## State
+
+Usable but not production ready
+
 ## Purpose
 
 It's currently a work in progress. This is simple project I'm using to learn the listed frameworks.
