@@ -39,5 +39,5 @@ class OneTimeUseCode(models.Model):
         on_delete = models.CASCADE,
         blank = False,
         null = False)
-    path = models.TextField(blank=False, null=False)
+    path = models.TextField(blank=False, null=False, default="/")
     code = models.TextField(unique=True, blank = False, null = False)
