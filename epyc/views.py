@@ -9,7 +9,7 @@ import secrets
 
 from .serializers import GameSerializer, EntrySerializer, OneTimeUseCodeSerializer
 
-from rest_framework_simplejwt.tokens import AccessToken
+from rest_framework_simplejwt.tokens import AccessToken, RefreshToken
 
 
 class GameListApiView(APIView):
@@ -183,16 +183,16 @@ class OneTimeUseAccessView(APIView):
         expiration = data.created_at + data.expires_in
         if data and expiration.timestamp() > datetime.now().timestamp():
             user = data.user
-            token = AccessToken.for_user(user=user)
+            access_token = AccessToken.for_user(user=user)
+            refresh_token = RefreshToken.for_user(user=user)
             payload = {
                 "token": {
-                    "token": str(token),
-                    "token_type": token["token_type"],
-                    "exp": token["exp"],
-                    "user_id": token["user_id"],
+                    "access": str(access_token),
+                    "refresh": str(refresh_token),
+                    "user_id": access_token["user_id"],
                 },
-                "user_name": user.username,
-                "path": "/api/entries/" + str(data.entry.id),
+                "username": user.username,
+                "path": "/entry/" + str(data.entry.id),
             }
             return Response(payload, status=status.HTTP_200_OK)
         return Response("invalid code", status=status.HTTP_404_NOT_FOUND)

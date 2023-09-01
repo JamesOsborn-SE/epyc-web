@@ -79,6 +79,18 @@ export const useAuth = defineStore('auth', {
     },
     stopRefreshTokenTimer() {
       clearTimeout(this.refreshTokenTimeout);
+    },
+    async getAuthFromCode(code: string): Promise<string> {
+      var path: string = ""
+      await axios.post(`${backendHostname}/api/token/oneTimeUse/${code}`, {}, {})
+        .then(response => {
+          this.accessToken = response.data.token.access
+          this.refreshToken = response.data.token.refresh
+          this.username = response.data.username
+          this.startRefreshTokenTimer();
+          path = response.data.path
+        })
+        return path
     }
   }
 })
