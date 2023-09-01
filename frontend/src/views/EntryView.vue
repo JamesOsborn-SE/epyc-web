@@ -105,7 +105,6 @@ export default {
       const code = await auth.getCode(path)
       const shareData = {
         title: "Invite friends",
-        text: "Invite friends to play Eat Poop You Cat!",
         url: `https://${location.host}/login?code=${code}`,
       }
       try {
@@ -154,7 +153,7 @@ export default {
       </button>
       <button v-if="!canShare()" class="btn btn-secondary" value="shareThis" :disabled="isSubmitting" :onclick="copyToClipboard">
         <span v-show="isSubmitting" class="spinner-border spinner-border-sm me-1"></span>
-        copy to clipboard
+        copy sharable link to clipboard
       </button>
       <h2>Draw this sentence</h2>
       <p> {{ entry.sentence }} </p>
