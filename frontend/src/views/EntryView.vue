@@ -7,6 +7,7 @@ import { Entry } from '@/types/Entry';
 import type { AxiosError } from "axios";
 import Paint from "@/components/Paint.vue";
 import { useAuth } from "@/stores/auth";
+import { useToast, POSITION } from "vue-toastification";
 
 const imageData = ref()
 const entry = ref()
@@ -39,6 +40,7 @@ export default {
       })
   },
   setup() {
+    const toast = useToast();
     gameStore.value = useGame()
     const route = useRoute()
     path.value = route.fullPath
@@ -57,6 +59,7 @@ export default {
           }
         })
     })
+    return { toast }
   },
   components: {
     Paint
@@ -124,13 +127,29 @@ export default {
       const url = `https://${location.host}/login?code=${code}`
       navigator.clipboard.writeText(url).then(
         () => {
-          console.log("clipboard successfully set")
+          this.triggerToast("Copied!!!1")
         },
         () => {
-          console.log("clipboard write failed")
+          this.triggerToast("Failed to Copy")
         },
       );
-    }
+    },
+    triggerToast(message: string) {
+     this.toast(message, {
+       position: POSITION.TOP_RIGHT,
+       timeout: 5000,
+       closeOnClick: true,
+       pauseOnFocusLoss: true,
+       pauseOnHover: true,
+       draggable: true,
+       draggablePercent: 0.6,
+       showCloseButtonOnHover: true,
+       hideProgressBar: true,
+       closeButton: "button",
+       icon: "fas fa-rocket",
+       rtl: false
+     });
+   }
   },
   data() {
     return {
