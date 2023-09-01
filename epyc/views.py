@@ -192,7 +192,7 @@ class OneTimeAccessView(APIView):
                     "user_id": access_token["user_id"],
                 },
                 "username": user.username,
-                "path": "/entry/" + str(data.entry.id),
+                "path": data.path,
             }
             return Response(payload, status=status.HTTP_200_OK)
         return Response("invalid code", status=status.HTTP_404_NOT_FOUND)
