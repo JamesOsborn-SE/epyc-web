@@ -94,7 +94,11 @@ export default {
           const entryId = e.id
           router.push({ name: 'entry', params: { id: entryId } })
         })
-      isSubmitting.value = false
+        .catch((err: AxiosError) => {
+          console.log(err)
+        }).finally(()=>{
+          isSubmitting.value = false
+        })
     },
     endGame(event: Event) {
       gameStore.value
@@ -165,15 +169,15 @@ export default {
 
 <template>
   <div>
+    <button v-if="canShare()" class="btn btn-secondary" value="shareThis" :disabled="isSubmitting" :onclick="shareThis">
+      <span v-show="isSubmitting" class="spinner-border spinner-border-sm me-1"></span>
+      share
+    </button>
+    <button v-if="!canShare()" class="btn btn-secondary" value="shareThis" :disabled="isSubmitting" :onclick="copyToClipboard">
+      <span v-show="isSubmitting" class="spinner-border spinner-border-sm me-1"></span>
+      copy sharable link to clipboard
+    </button>
     <div v-if="entry && entry.sentence" class="column">
-      <button v-if="canShare()" class="btn btn-secondary" value="shareThis" :disabled="isSubmitting" :onclick="shareThis">
-        <span v-show="isSubmitting" class="spinner-border spinner-border-sm me-1"></span>
-        share
-      </button>
-      <button v-if="!canShare()" class="btn btn-secondary" value="shareThis" :disabled="isSubmitting" :onclick="copyToClipboard">
-        <span v-show="isSubmitting" class="spinner-border spinner-border-sm me-1"></span>
-        copy sharable link to clipboard
-      </button>
       <h2>Draw this sentence</h2>
       <p> {{ entry.sentence }} </p>
       <Paint @save="handleSaveImage" />
