@@ -28,7 +28,7 @@ from epyc.views import (
     GameLastImageEntry,
     GameEntriesListApiView,
     GameEndApiView,
-    OneTimeUseAccessView,
+    OneTimeAccessView,
 )
 from django.conf import settings
 from django.conf.urls.static import static
@@ -38,8 +38,8 @@ urlpatterns = [
     path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
     path('api/token/verify/', TokenVerifyView.as_view(), name='token_verify'),
-    path('api/token/oneTimeUse/', OneTimeUseAccessView.as_view(), kwargs={'code': None}),
-    path('api/token/oneTimeUse/<code>', OneTimeUseAccessView.as_view()),
+    path('api/token/oneTimeUse/', OneTimeAccessView.as_view(), kwargs={'code': None}),
+    path('api/token/oneTimeUse/<code>', OneTimeAccessView.as_view()),
     path('api/games/', GameListApiView.as_view(), kwargs={'game_id': None}),
     path('api/games/<uuid:game_id>', GameListApiView.as_view()),
     path('api/games/<uuid:game_id>/end', GameEndApiView.as_view()),

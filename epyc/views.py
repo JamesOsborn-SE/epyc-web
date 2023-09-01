@@ -177,7 +177,7 @@ class GameEndApiView(APIView):
         return Response(game_id, status=status.HTTP_200_OK)
 
 
-class OneTimeUseAccessView(APIView):
+class OneTimeAccessView(APIView):
     def post(self, request, code, *args, **kwargs):
         data = OneTimeUseCode.objects.filter(code=code).first()
         expiration = data.created_at + data.expires_in
