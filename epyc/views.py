@@ -202,7 +202,7 @@ class OneTimeAccessView(APIView):
             return
         data = {
             "user": request.user.id,
-            "entry": request.data.get("entry_id"),
+            "path": request.GET.get("path"),
             "code": secrets.token_urlsafe(12),
         }
         print(data)
