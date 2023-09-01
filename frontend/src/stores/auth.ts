@@ -1,7 +1,7 @@
 import axios from 'axios'
 import { defineStore } from 'pinia'
 
-const backendHostname=import.meta.env.VITE_BACKEND_HOSTNAME
+const backendHostname = import.meta.env.VITE_BACKEND_HOSTNAME
 
 export const useAuth = defineStore('auth', {
   state: () => {
@@ -38,9 +38,9 @@ export const useAuth = defineStore('auth', {
     updateRenewToken(newRenewToken: string) {
       this.refreshToken = newRenewToken
     },
-    logout(){
+    logout() {
       this.refreshTokenExpiresAt = 0
-      localStorage.setItem('auth','')
+      localStorage.setItem('auth', '')
     },
     async login(username: string, password: string): Promise<void> {
       const response = await axios.post(backendHostname + '/api/token/',
@@ -55,11 +55,7 @@ export const useAuth = defineStore('auth', {
       this.startRefreshTokenTimer()
     },
     async refreshAccessToken() {
-      await axios.post(backendHostname + '/api/token/refresh/', {}, {
-        headers: {
-          'Authorization': 'Bearer ' + this.accessToken
-        }
-      })
+      await axios.post(backendHostname + '/api/token/refresh/', {}, this.getHeaders)
         .then(response => {
           this.accessToken = response.data.access
           this.refreshToken = response.data.refresh
@@ -91,6 +87,16 @@ export const useAuth = defineStore('auth', {
           path = response.data.path
         })
         return path
+    },
+    async getCode(path: string): Promise<string> {
+      var code: string = ""
+      await axios.get(`${backendHostname}/api/token/oneTimeUse/?path=${path}`, this.getHeaders)
+        .then(response => {
+          code = response.data.code
+        }).catch((err)=>{
+          console.log(err)
+        })
+        return code
     }
   }
 })
