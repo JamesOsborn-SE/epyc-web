@@ -184,11 +184,12 @@ class OneTimeAccessView(APIView):
         if data and expiration.timestamp() > datetime.now().timestamp():
             user = data.user
             access_token = AccessToken.for_user(user=user)
-            refresh_token = RefreshToken.for_user(user=user)
+            now = (datetime.utcnow()-datetime.fromtimestamp(0)).total_seconds()
+            access_token.set_exp(from_time=now, lifetime=86400)
             payload = {
                 "token": {
                     "access": str(access_token),
-                    "refresh": str(refresh_token),
+                    "refresh": "nope",
                     "user_id": access_token["user_id"],
                 },
                 "username": user.username,
