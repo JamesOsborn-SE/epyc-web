@@ -14,7 +14,7 @@ function overLoadTouchMove(e: TouchEvent) {
   const paintEndX = paintStartX + paint.offsetWidth
   const paintStartY = paint.offsetTop - scrollTop
   const paintEndY = paintStartY + paint.offsetHeight
-  // debugger
+
   const x = e.touches[0].clientX
   const y = e.touches[0].clientY
 
