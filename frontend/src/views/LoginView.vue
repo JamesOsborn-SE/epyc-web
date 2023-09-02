@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onMounted, reactive } from 'vue'
+import { mergeProps, onMounted, reactive, ref } from 'vue'
 import { useAuth } from '../stores/auth'
 import router from '@/router'
 import { useRoute } from 'vue-router';
@@ -7,12 +7,11 @@ import PencilSpinner from '@/components/PencilSpinner.vue';
 
 const authStore = useAuth()
 
-const state = reactive({
-    username: "",
-    password: "",
-    isSubmitting: false,
-    isLoading: true,
-})
+
+const username = ref("")
+const password = ref("")
+const isSubmitting = ref(false)
+const isLoading = ref(true)
 
 const route = useRoute()
 const code = route.query["code"]
@@ -25,15 +24,15 @@ if (!code && !authStore.hasExpired) {
 async function onSubmit(event: Event) {
     event.preventDefault()
 
-    state.isSubmitting = true
-    await authStore.login(state.username, state.password)
+    isSubmitting.value = true
+    await authStore.login(username.value, password.value)
         .then(() => {
             if (!authStore.hasExpired)
                 router.push('/');
         })
         .catch()
         .finally(() => {
-            state.isSubmitting = false
+            isSubmitting.value = false
         })
 }
 onMounted(() => {
@@ -42,30 +41,30 @@ onMounted(() => {
         authStore.getAuthFromCode(code).then((path: string) => {
             router.push(path)
         }).finally(() => {
-            state.isLoading = false
+            isLoading.value = false
         })
     } else {
-        state.isLoading = false
+        isLoading.value = false
     }
 })
 </script>
 
 <template>
     <div class="col-md-6 offset-md-3 mt-5">
-        <PencilSpinner :show="state.isLoading"/>
+        <PencilSpinner :show="isLoading"/>
         <h2>Login</h2>
         <form id="loginForm" @submit="onSubmit">
             <div class="mb-3">
                 <label class="form-label">Username</label>
-                <input v-model="state.username" :required="true">
+                <input v-model="username" :required="true">
             </div>
             <div class="mb-3">
                 <label class="form-label">Password</label>
-                <input v-model="state.password" type="password" :required="true" :minlength="3">
+                <input v-model="password" type="password" :required="true" :minlength="3">
             </div>
             <div class="mb-3">
-                <button class="btn btn-primary" type="submit" value="submit" :disabled="state.isSubmitting">
-                    <span v-show="state.isSubmitting" class="spinner-border spinner-border-sm me-1"></span>
+                <button class="btn btn-primary" type="submit" value="submit" :disabled="isSubmitting">
+                    <span v-show="isSubmitting" class="spinner-border spinner-border-sm me-1"></span>
                     Login
                 </button>
             </div>
