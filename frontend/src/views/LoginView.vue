@@ -52,7 +52,7 @@ onMounted(() => {
 
 <template>
     <div class="col-md-6 offset-md-3 mt-5">
-        <PencilSpinner v-if="state.isLoading" />
+        <PencilSpinner :show="state.isLoading"/>
         <h2>Login</h2>
         <form id="loginForm" @submit="onSubmit">
             <div class="mb-3">

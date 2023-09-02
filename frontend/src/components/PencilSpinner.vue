@@ -1,5 +1,13 @@
+<script setup lang="ts">
+defineProps({
+  show: {
+    type: Boolean,
+    required: true
+  }
+})
+</script>
 <template>
-  <div id="pencilHolder">
+    <div id="pencilHolder" v-show="show">
       <svg class="pencil" viewBox="0 0 200 200" width="200px" height="200px" xmlns="http://www.w3.org/2000/svg">
         <defs>
           <clipPath id="pencil-eraser">
