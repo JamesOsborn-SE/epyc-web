@@ -1,8 +1,7 @@
 <script setup lang="ts">
 import { mergeProps, onMounted, reactive, ref } from 'vue'
 import { useAuth } from '../stores/auth'
-import router from '@/router'
-import { useRoute } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
 import PencilSpinner from '@/components/PencilSpinner.vue';
 
 const authStore = useAuth()
@@ -12,7 +11,7 @@ const username = ref("")
 const password = ref("")
 const isSubmitting = ref(false)
 const isLoading = ref(true)
-
+const router = useRouter()
 const route = useRoute()
 const code = route.query["code"]
 
