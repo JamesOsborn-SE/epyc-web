@@ -15,8 +15,8 @@ export default mergeConfig(
         web: [/\.[jt]sx$/]
       },
       coverage: {
-      provider: 'istanbul'
-    }
+        provider: 'istanbul'
+      }
     }
   })
 )
