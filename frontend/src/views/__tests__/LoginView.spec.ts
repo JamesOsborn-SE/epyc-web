@@ -3,12 +3,12 @@ import { createTestingPinia } from '@pinia/testing'
 import { mount } from '@vue/test-utils'
 import LoginView from '@/views/LoginView.vue'
 import { useAuth } from '@/stores/auth'
-import { useRoute, } from 'vue-router'
+import { useRoute, useRouter, } from 'vue-router'
 import { nextTick } from 'vue'
 
 vi.mock('vue-router', () => ({
   useRoute: vi.fn().mockReturnValue({
-    query: { code: '123' },
+    query: { code: "123" },
   }),
   useRouter: vi.fn().mockReturnValue({
     push: vi.fn(),
@@ -35,6 +35,7 @@ describe('LoginView.vue', () => {
   let wrapper: any
   let authStub: any
   let routeStub: any
+  let routerStub: any
   beforeEach(() => {
 
   })
@@ -45,7 +46,7 @@ describe('LoginView.vue', () => {
     authStub = useAuth()
     authStub.hasExpired = true
     routeStub = useRoute()
-
+    routerStub = useRouter()
     wrapper = mount(LoginView, {
       global: {
         plugins: [createTestingPinia()],
@@ -64,6 +65,30 @@ describe('LoginView.vue', () => {
     expect(authStub.login).toHaveBeenCalledWith('testuser', 'testpass')
   })
 
-
-  // Add more tests as needed...
+  it('redirects to if no code is valid', () =>{
+    vi.mock('vue-router', () => ({
+      useRoute: vi.fn().mockReturnValue({
+        query: { code: "123" },
+      }),
+      useRouter: vi.fn().mockReturnValue({
+        push: vi.fn(),
+        beforeEach: vi.fn(),
+        afterEach: vi.fn(),
+      }),
+      createRouter: vi.fn().mockReturnValue({
+        push: vi.fn(),
+        beforeEach: vi.fn(),
+      }),
+      createWebHistory: vi.fn(),
+    }));
+    vi.mock('@/stores/auth', () =>({
+      useAuth: vi.fn().mockReturnValue({
+        getAuthFromCode: vi.fn().mockResolvedValue("/games/oof/"),
+        login: vi.fn().mockResolvedValue(""),
+        hasExpired: vi.fn().mockResolvedValue(false)
+      })
+    }))  
+    
+    expect(routerStub.push).toBeCalledWith("/games/oof/")
+  })
 })
