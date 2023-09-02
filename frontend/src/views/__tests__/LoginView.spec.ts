@@ -24,7 +24,8 @@ vi.mock('vue-router', () => ({
 
 vi.mock('@/stores/auth', () =>({
   useAuth: vi.fn().mockReturnValue({
-    getAuthFromCode: vi.fn().mockResolvedValue("")
+    getAuthFromCode: vi.fn().mockResolvedValue(""),
+    login: vi.fn().mockResolvedValue(""),
   })
 }))
 
@@ -55,4 +56,14 @@ describe('LoginView.vue', () => {
     expect(wrapper.find('#loginForm').exists()).toBe(true)
   })
 
+  it('submits form and calls login method', async () => {
+    wrapper.find('#username').setValue('testuser')
+    wrapper.find('#password').setValue('testpass')
+    wrapper.find('form').trigger('submit')
+    await nextTick()
+    expect(authStub.login).toHaveBeenCalledWith('testuser', 'testpass')
+  })
+
+
+  // Add more tests as needed...
 })

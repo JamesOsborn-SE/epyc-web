@@ -56,11 +56,11 @@ onMounted(() => {
         <form id="loginForm" @submit="onSubmit">
             <div class="mb-3">
                 <label class="form-label">Username</label>
-                <input v-model="username" :required="true">
+                <input id="username" v-model="username" :required="true">
             </div>
             <div class="mb-3">
                 <label class="form-label">Password</label>
-                <input v-model="password" type="password" :required="true" :minlength="3">
+                <input id="password" v-model="password" type="password" :required="true" :minlength="3">
             </div>
             <div class="mb-3">
                 <button class="btn btn-primary" type="submit" value="submit" :disabled="isSubmitting">
