@@ -1,5 +1,5 @@
-<script lang="ts">
-import { onMounted, ref } from "vue"
+<script setup lang="ts">
+import { onMounted, ref, watch } from "vue"
 import { useRoute } from 'vue-router'
 import router from '@/router'
 import { useGame } from '@/stores/game';
@@ -8,6 +8,10 @@ import type { Entry } from "@/types/Entry";
 
 const entries = ref<Entry[]>()
 const gameStore = ref()
+const route = useRoute()
+
+gameStore.value = useGame()
+
 function getAllEntries(gameId: string | string[]) {
   gameStore.value
     .getEntries(gameId)
@@ -23,26 +27,16 @@ function getAllEntries(gameId: string | string[]) {
     })
 }
 
-export default {
-  created() {
+onMounted(() => {
+  getAllEntries(route.params.id)
+})
 
-    this.$watch(
-      () => this.$route.params,
-      (toParams) => {
-        getAllEntries(toParams.id)
-      })
-  },
-  setup() {
-    gameStore.value = useGame()
-    const route = useRoute()
-    onMounted(() => {
-      getAllEntries(route.params.id)
-    })
-  },
-  data() {
-    return { entries }
-  },
-}
+watch(
+  () => route.params,
+  (toParams) => {
+    getAllEntries(toParams.id)
+  })
+
 </script>
 
 <template>
@@ -72,5 +66,3 @@ export default {
     <hr />
   </div>
 </template>
-
-
