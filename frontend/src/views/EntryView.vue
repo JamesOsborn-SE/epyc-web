@@ -40,8 +40,6 @@ watch(
       })
   })
 
-
-
 gameStore.value = useGame()
 
 onMounted(() => {
@@ -126,27 +124,25 @@ function canShare(): boolean {
   return canShare
 }
 
-function shareThis(event: Event) {
+async function shareThis(event: Event) {
   const auth = useAuth()
-  auth.getCode(path).then(async (code: string)=>{
-    const shareData = {
-      title: "Invite friends",
-      url: `https://${location.host}/login?code=${code}`,
-    }
-    try {
-      await navigator.share(shareData);
-      console.log("shared successfully")
-    } catch (err) {
-      console.log("share err", err);
-    }
-  })
-
+  const code = await auth.getCode(path)
+  const shareData = {
+    title: "Invite friends",
+    url: `https://${location.host}/login?code=${code}`,
+  }
+  try {
+    await navigator.share(shareData);
+    console.log("shared successfully")
+  } catch (err) {
+    console.log("share err", err);
+  }
 }
 
-function copyToClipboard() {
+async function copyToClipboard() {
   const auth = useAuth()
-  auth.getCode(path.value).then((code: string) => {
-      const url = `https://${location.host}/login?code=${code}`
+  const code = await auth.getCode(path.value)
+  const url = `https://${location.host}/login?code=${code}`
   navigator.clipboard.writeText(url).then(
     () => {
       triggerToast("Copied!!!1")
@@ -155,7 +151,6 @@ function copyToClipboard() {
       triggerToast("Failed to Copy")
     },
   );
-  })
 }
 
 </script>
