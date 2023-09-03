@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onMounted, ref, watch } from "vue"
+import { onMounted, ref } from "vue"
 import router from '@/router'
 import { useGame } from '@/stores/game';
 import type { AxiosError } from "axios";
