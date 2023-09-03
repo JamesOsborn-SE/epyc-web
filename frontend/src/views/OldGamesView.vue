@@ -1,5 +1,5 @@
-<script lang="ts">
-import { onMounted, ref } from "vue"
+<script setup lang="ts">
+import { onMounted, ref, watch } from "vue"
 import router from '@/router'
 import { useGame } from '@/stores/game';
 import type { AxiosError } from "axios";
@@ -7,9 +7,10 @@ import type { Game } from "@/types/Game";
 import GamePreview from "@/components/GamePreview.vue";
 
 const games = ref<Game[]>()
-const gameStore = ref()
+const gameStore = useGame()
+
 function getGames() {
-  gameStore.value
+  gameStore
     .getGames()
     .then((g: Game[]) => {
       games.value = g
@@ -23,26 +24,14 @@ function getGames() {
     })
 }
 
-export default {
-  setup() {
-    gameStore.value = useGame()
-    onMounted(() => {
-      getGames()
-    })
-  },
-  methods: {
-    formatDate(dateString: string) {
-      const date = new Date(dateString);
-      return new Intl.DateTimeFormat('default', { dateStyle: 'short', timeStyle: 'short' }).format(date);
-    }
-  },
-  components: {
-    GamePreview
-  },
-  data() {
-    return { games: games }
-  },
+function formatDate(dateString: string) {
+  const date = new Date(dateString);
+  return new Intl.DateTimeFormat('default', { dateStyle: 'short', timeStyle: 'short' }).format(date);
 }
+
+onMounted(() => {
+  getGames()
+})
 </script>
 
 <template>
