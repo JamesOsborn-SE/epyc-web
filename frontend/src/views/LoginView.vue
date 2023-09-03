@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { mergeProps, onMounted, reactive, ref } from 'vue'
+import { onMounted, ref } from 'vue'
 import { useAuth } from '../stores/auth'
 import { useRoute, useRouter } from 'vue-router';
 import PencilSpinner from '@/components/PencilSpinner.vue';
