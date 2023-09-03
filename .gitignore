@@ -173,3 +173,5 @@ yarn-error.log*
 *.ntvs*
 *.njsproj
 *.sln
+
+*/static
