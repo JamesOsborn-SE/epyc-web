@@ -3,7 +3,7 @@ import router from '@/router'
 import { useRoute } from 'vue-router'
 import { useGame } from '@/stores/game';
 import type { Entry } from '@/types/Entry';
-import PencilSpinnerVue from '@/components/PencilSpinner.vue';
+import PencilSpinner from '@/components/PencilSpinner.vue';
 import { onMounted } from 'vue';
 
 onMounted(()=>
@@ -20,6 +20,6 @@ onMounted(()=>
 
 <template>
   <div>
-    <PencilSpinnerVue :show="true"/>
+    <PencilSpinner :show="true"/>
   </div>
 </template>
