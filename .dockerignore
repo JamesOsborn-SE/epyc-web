@@ -1,0 +1,8 @@
+fly.toml
+.git/
+*.sqlite3
+frontend/
+.venv/
+.vscode/
+node_modules/
+.env
