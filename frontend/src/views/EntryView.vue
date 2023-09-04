@@ -22,6 +22,7 @@ const route = useRoute()
 watch(
   () => route.params,
   (toParams) => {
+    triggerToast("Continue the game by sharing the link with a friend!!")
     sentence.value = ""
     imageData.value = null
     gameStore.value
