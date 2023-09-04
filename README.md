@@ -117,16 +117,12 @@ You start with a sentence pass it to the next person and it they draw a picture.
       VITE_BACKEND_HOSTNAME
       ```
 
-   ~~set the secrets~~ **currently not working**
-
+   * set the secrets
    ***Replace BACKEND and FRONTEND with your app names***
 
    * ```shell
         fly secrets set --app "FRONTEND" VITE_BACKEND_HOSTNAME="https://BACKEND.fly.dev"
         ```
-
-   * Edit `Frontend/Dockerfile`
-      * add `ENV VITE_BACKEND_HOSTNAME="https://BACKEND.fly.dev"`
 
 2. Deploy
 
@@ -134,5 +130,5 @@ You start with a sentence pass it to the next person and it they draw a picture.
 
     * ```shell
         cd FrontEnd
-        flyctl deploy -a "FRONTEND"
+        flyctl deploy --app "FRONTEND" --build-secret VITE_BACKEND_HOSTNAME="BACKEND"
         ```

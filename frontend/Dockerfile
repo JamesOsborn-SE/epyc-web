@@ -12,6 +12,9 @@ WORKDIR /app
 # Set production environment
 ENV NODE_ENV=production
 
+RUN --mount=type=secret,id=VITE_BACKEND_HOSTNAME \
+    echo VITE_BACKEND_HOSTNAME="$(cat /run/secrets/VITE_BACKEND_HOSTNAME)" >> .env
+
 # Throw-away build stage to reduce size of final image
 FROM base as build
 
