@@ -31,7 +31,7 @@ SECRET_KEY = os.getenv('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.getenv('STAGE')=='DEBUG'
 
-ALLOWED_HOSTS = json.loads(os.getenv('ALLOWED_HOSTS'))
+ALLOWED_HOSTS = json.loads(os.getenv('ALLOWED_HOSTS', '[]'))
 
 # Application definition
 
@@ -187,8 +187,8 @@ SIMPLE_JWT = {
 }
 
 CORS_ORIGIN_WHITELIST = (
-    os.getenv('FRONT_END_URL'),
+    os.getenv('FRONT_END_URL',''),
 )
 
-CSRF_TRUSTED_ORIGINS=json.loads(os.getenv('CSRF_TRUSTED_ORIGINS'))
+CSRF_TRUSTED_ORIGINS=json.loads(os.getenv('CSRF_TRUSTED_ORIGINS','[]'))
 
