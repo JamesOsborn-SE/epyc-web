@@ -15,7 +15,17 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - uses: superfly/flyctl-actions/setup-flyctl@master
-      - run: "flyctl deploy --remote-only --app $BACKEND_APP_NAME"
+      - name: Set Secrets
+        run: echo secrets set --app $FRONTEND_APP_NAME FRONT_END_URL=$FRONTEND_URL ALLOWED_HOSTS=$ALLOWED_HOSTS CSRF_TRUSTED_ORIGINS=$CSRF_TRUSTED_ORIGINS SECRET_KEY=$SECRET_KEY
+        env:
+          FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
+          ALLOWED_HOSTS: "[ ${{ vars.BACKEND_APP_NAME }}.fly.dev ]"
+          CSRF_TRUSTED_ORIGINS: '["https://${{ vars.FRONTEND_APP_NAME }}.fly.dev", "https://${{ vars.BACKEND_APP_NAME }}.fly.dev"]'
+          BACKEND_APP_NAME: ${{ vars.BACKEND_APP_NAME }}
+          FRONTEND_APP_NAME: ${{ vars.FRONTEND_APP_NAME }}
+          SECRET_KEY: ${{ secrets.DJANGO_KEY }}
+      - name: Deploy via fly
+        run: "flyctl deploy --remote-only --app $BACKEND_APP_NAME"
         env:
           FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
           BACKEND_APP_NAME: ${{ vars.BACKEND_APP_NAME }}
