@@ -8,44 +8,22 @@ import { AxiosError } from "axios";
 import Paint from "@/components/Paint.vue";
 import { useAuth } from "@/stores/auth";
 import { useToast, POSITION } from "vue-toastification";
+import PencilSpinner from '@/components/PencilSpinner.vue';
 
 const imageData = ref()
 const entry = ref()
 const gameStore = ref()
 const sentence = ref(String())
 const isSubmitting = ref(false)
+const isLoading = ref(true)
 const errors = ref([])
 const path = ref("")
 const toast = useToast();
 const route = useRoute()
 
-watch(
-  () => route.params,
-  (toParams) => {
-    triggerToast("Continue the game by sharing the link with a friend!!")
-    sentence.value = ""
-    imageData.value = null
-    gameStore.value
-      .getEntry(toParams.id)
-      .then((e: Entry) => {
-        entry.value = e
-        path.value = `/game/${e.game_id}/continue`
-        imageData.value = "" + e.drawing
-      })
-      .catch((err: AxiosError) => {
-        if (err.response?.status == 401) {
-          router.push("/logout")
-        } else {
-          console.log(err)
-        }
-      })
-  })
-
-gameStore.value = useGame()
-
-onMounted(() => {
+function loadEntry(id: string | string[]) {
   gameStore.value
-    .getEntry(route.params.id)
+    .getEntry(id as string)
     .then((e: Entry) => {
       entry.value = e
       path.value = `/game/${e.game_id}/continue`
@@ -58,6 +36,25 @@ onMounted(() => {
         console.log(err)
       }
     })
+    .finally(() => {
+      isLoading.value = false
+    })
+}
+
+watch(
+  () => route.params,
+  (toParams) => {
+    isLoading.value = true
+    triggerToast("Continue the game by sharing the link with a friend!!")
+    sentence.value = ""
+    imageData.value = null
+    loadEntry(toParams.id)
+  })
+
+gameStore.value = useGame()
+
+onMounted(() => {
+  loadEntry(route.params.id)
 })
 
 function handleSaveImage(imageBlob: Blob | null) {
@@ -157,6 +154,7 @@ async function copyToClipboard() {
 </script>
 
 <template>
+  <PencilSpinner :show="isLoading" />
   <div class="container">
     <button v-if="canShare()" class="btn btn-secondary" value="shareThis" :disabled="isSubmitting" :onclick="shareThis">
       <span v-show="isSubmitting" class="spinner-border spinner-border-sm me-1"></span>
