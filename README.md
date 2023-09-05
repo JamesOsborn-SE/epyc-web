@@ -6,6 +6,8 @@
 
 [![Backend Deploy](https://github.com/JamesOsborn-SE/epyc-web/actions/workflows/backend-deploy.yml/badge.svg)](https://github.com/JamesOsborn-SE/epyc-web/actions/workflows/backend-deploy.yml)
 
+[![licence](https://img.shields.io/github/license/JamesOsborn-SE/epyc-web)](https://github.com/JamesOsborn-SE/epyc-web/blob/main/LICENSE)
+
 ## Premise
 
 Eat Poop You Cat is a bit like telephone meets that one game where you try to get folks to guess the drawing.
