@@ -13,11 +13,9 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - uses: superfly/flyctl-actions/setup-flyctl@master
-      - working-directory: ./frontend/
       - run: flyctl deploy --remote-only --app $FRONTEND_APP_NAME  --build-secret VITE_BACKEND_HOSTNAME="https://${BACKEND_APP_NAME}.fly.dev"
+        working-directory: ./frontend/
         env:
           FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
           BACKEND_APP_NAME: ${{ vars.BACKEND_APP_NAME }}
           FRONTEND_APP_NAME: ${{ vars.FRONTEND_APP_NAME }}
-
-
