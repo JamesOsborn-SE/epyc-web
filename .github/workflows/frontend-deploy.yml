@@ -7,7 +7,7 @@ on:
       - main
 jobs:
   deploy:
-    name: Deploy Backend
+    name: Deploy Frontend
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3

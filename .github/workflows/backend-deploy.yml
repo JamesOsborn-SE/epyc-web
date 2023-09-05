@@ -2,8 +2,9 @@ name: Backend Deploy
 on:
   push:
     paths:
-      - epyc_web/**
-      - epyc/**
+      - 'epyc_web/**'
+      - 'epyc/**'
+      - '!frontend/**'
     branches:
       - main
 jobs:
