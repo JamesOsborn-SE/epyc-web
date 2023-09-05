@@ -61,6 +61,7 @@ function handleSaveImage(imageBlob: Blob | null) {
   if (!imageBlob) {
     return
   }
+  isLoading.value = true
   let reader = new FileReader();
   reader.readAsDataURL(imageBlob);
   reader.onloadend = function () {
@@ -72,6 +73,11 @@ function handleSaveImage(imageBlob: Blob | null) {
         .then((e: Entry) => {
           const entryId = e.id
           router.push({ name: 'entry', params: { id: entryId } })
+        })
+        .catch((err: AxiosError) => {
+          console.log(err)
+        }).finally(() => {
+          isSubmitting.value = false
         })
     }
   }
@@ -93,10 +99,16 @@ function handleSentenceSave(event: Event) {
     })
 }
 function endGame(event: Event) {
+  isLoading.value = true
   gameStore.value
     .endGame(entry.value.game_id)
     .then(() => {
       router.push({ name: 'game', params: { id: entry.value.game_id } })
+    }).catch((err: AxiosError) => {
+      console.log(err)
+    })
+    .finally(() => {
+      isSubmitting.value = false
     })
 }
 
