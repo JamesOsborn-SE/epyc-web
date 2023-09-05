@@ -14,7 +14,6 @@ const imageData = ref()
 const entry = ref()
 const gameStore = ref()
 const sentence = ref(String())
-const isSubmitting = ref(false)
 const isLoading = ref(true)
 const errors = ref([])
 const path = ref("")
@@ -75,15 +74,15 @@ function handleSaveImage(imageBlob: Blob | null) {
           router.push({ name: 'entry', params: { id: entryId } })
         })
         .catch((err: AxiosError) => {
-          console.log(err)
-        }).finally(() => {
-          isSubmitting.value = false
-        })
+      console.log(err)
+    }).finally(() => {
+      isLoading.value = false
+    })
     }
   }
 }
 function handleSentenceSave(event: Event) {
-  isSubmitting.value = true
+  isLoading.value = true
   event.preventDefault()
   const newEntry = new Entry(null, null, null, entry.value.game_id, entry.value.sequence + 1, sentence.value, null)
   gameStore.value
@@ -95,20 +94,20 @@ function handleSentenceSave(event: Event) {
     .catch((err: AxiosError) => {
       console.log(err)
     }).finally(() => {
-      isSubmitting.value = false
+      isLoading.value = false
     })
 }
 function endGame(event: Event) {
-  isLoading.value = true
+  isLoading.value=true
   gameStore.value
     .endGame(entry.value.game_id)
     .then(() => {
       router.push({ name: 'game', params: { id: entry.value.game_id } })
-    }).catch((err: AxiosError) => {
+    }).catch((err: AxiosError)=>{
       console.log(err)
     })
-    .finally(() => {
-      isSubmitting.value = false
+    .finally(()=>{
+      isLoading.value = false
     })
 }
 
@@ -168,13 +167,11 @@ async function copyToClipboard() {
 <template>
   <PencilSpinner :show="isLoading" />
   <div class="container">
-    <button v-if="canShare()" class="btn btn-secondary" value="shareThis" :disabled="isSubmitting" :onclick="shareThis">
-      <span v-show="isSubmitting" class="spinner-border spinner-border-sm me-1"></span>
+    <button v-if="canShare()" class="btn btn-secondary" value="shareThis" :onclick="shareThis">
       share
     </button>
-    <button v-if="!canShare()" class="btn btn-secondary" value="shareThis" :disabled="isSubmitting"
+    <button v-if="!canShare()" class="btn btn-secondary" value="shareThis"
       :onclick="copyToClipboard">
-      <span v-show="isSubmitting" class="spinner-border spinner-border-sm me-1"></span>
       copy sharable link to clipboard
     </button>
     <div v-if="entry && entry.sentence" class="column">
@@ -193,8 +190,7 @@ async function copyToClipboard() {
             title="four or more words and cannot start with a number">
         </div>
         <div class="mb-3">
-          <button class="btn btn-primary" type="submit" value="submit" :disabled="isSubmitting">
-            <span v-show="isSubmitting" class="spinner-border spinner-border-sm me-1"></span>
+          <button class="btn btn-primary" type="submit" value="submit">
             Submit Sentence
           </button>
         </div>
@@ -206,8 +202,7 @@ async function copyToClipboard() {
         </p>
       </form>
     </div>
-    <button class="btn btn-secondary" type="submit" value="endGame" :disabled="isSubmitting" :onclick="endGame">
-      <span v-show="isSubmitting" class="spinner-border spinner-border-sm me-1"></span>
+    <button class="btn btn-secondary" type="submit" value="endGame" :onclick="endGame">
       End Game For All
     </button>
   </div>
