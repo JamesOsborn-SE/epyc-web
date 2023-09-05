@@ -1,18 +1,20 @@
 # Eat Poop You Cat Web
 
-## State
+## Status
 
-Usable but not production ready
+[![Frontend Deploy](https://github.com/JamesOsborn-SE/epyc-web/actions/workflows/frontend-deploy.yml/badge.svg)](https://github.com/JamesOsborn-SE/epyc-web/actions/workflows/frontend-deploy.yml)
 
-## Purpose
-
-It's currently a work in progress. This is simple project I'm using to learn the listed frameworks.
+[![Backend Deploy](https://github.com/JamesOsborn-SE/epyc-web/actions/workflows/backend-deploy.yml/badge.svg)](https://github.com/JamesOsborn-SE/epyc-web/actions/workflows/backend-deploy.yml)
 
 ## Premise
 
 Eat Poop You Cat is a bit like telephone meets that one game where you try to get folks to guess the drawing.
 
 You start with a sentence pass it to the next person and it they draw a picture. Then they pass it to the next person and they can only see the last entry (picture in this case) and they write a sentence. It goes on until everyone has had a turn or boredom takes hold.
+
+### [Prompts](./PROMPTS.md)
+
+If you lack imagination check out these generated [Prompts](./PROMPTS.md)
 
 ## Tech used
 
@@ -65,4 +67,4 @@ You start with a sentence pass it to the next person and it they draw a picture.
     npm run --prefix frontend/ dev
     ```
 
-[Deploy](./DEPLOY.md)
+## [How to Deploy](./DEPLOY.md)
