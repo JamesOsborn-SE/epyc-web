@@ -30,7 +30,7 @@ function loadEntry(id: string | string[]) {
     })
     .catch((err: AxiosError) => {
       if (err.response?.status == 401) {
-        router.push("/logout")
+        router.push({name: "logout"})
       } else {
         console.log(err)
       }
@@ -71,7 +71,7 @@ function handleSaveImage(imageBlob: Blob | null) {
         .newEntry(newEntry)
         .then((e: Entry) => {
           const entryId = e.id
-          router.push({ name: 'entry', params: { id: entryId } })
+          router.push({ name: "entry", params: { id: entryId } })
         })
         .catch((err: AxiosError) => {
       console.log(err)
@@ -89,7 +89,7 @@ function handleSentenceSave(event: Event) {
     .newEntry(newEntry)
     .then((e: Entry) => {
       const entryId = e.id
-      router.push({ name: 'entry', params: { id: entryId } })
+      router.push({ name: "entry", params: { id: entryId } })
     })
     .catch((err: AxiosError) => {
       console.log(err)
@@ -102,7 +102,7 @@ function endGame(event: Event) {
   gameStore.value
     .endGame(entry.value.game_id)
     .then(() => {
-      router.push({ name: 'game', params: { id: entry.value.game_id } })
+      router.push({ name: "game", params: { id: entry.value.game_id } })
     }).catch((err: AxiosError)=>{
       console.log(err)
     })

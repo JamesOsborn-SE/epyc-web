@@ -9,7 +9,7 @@ const backendHostname = import.meta.env.VITE_BACKEND_HOSTNAME
 
 const handleError = (err: AxiosError) => {
   if (err.response?.status == 401) {
-    router.push({name:"login"})
+    router.push({name: "logout"})
     return;
   } else {
     console.log(err)

@@ -17,7 +17,7 @@ const code = route.query["code"]
 
 // redirect to home if already logged in
 if (!code && !authStore.hasExpired) {
-    router.push('/')
+    router.push({name: "home"})
 }
 
 async function onSubmit(event: Event) {
@@ -27,7 +27,7 @@ async function onSubmit(event: Event) {
     await authStore.login(username.value, password.value)
         .then(() => {
             if (!authStore.hasExpired)
-                router.push('/');
+                router.push({name: "home"});
         })
         .catch()
         .finally(() => {

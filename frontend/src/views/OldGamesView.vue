@@ -17,7 +17,7 @@ function getGames() {
     })
     .catch((err: AxiosError) => {
       if (err.response?.status == 401) {
-        router.push("/logout")
+        router.push({name: "logout"})
       } else {
         console.log(err)
       }
