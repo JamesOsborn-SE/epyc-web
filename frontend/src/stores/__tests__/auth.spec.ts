@@ -1,6 +1,7 @@
-import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
+import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { setActivePinia, createPinia } from 'pinia'
 import { useAuth } from '../auth'
+import { faker } from '@faker-js/faker';
 
 describe('Auth Store', () => {
     beforeEach(() => {
@@ -18,7 +19,7 @@ describe('Auth Store', () => {
     describe('valid token', () => {
         it('gets headers', () => {
             const auth = useAuth()
-            const accessToken = "token"
+            const accessToken = faker.token
             auth.accessToken = accessToken
             auth.refreshTokenExpiresAt = Date.now() + 500
             const headers = auth.getHeaders
