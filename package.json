@@ -11,6 +11,6 @@
     "frontend"
   ],
   "devDependencies": {
-    "vue-cli": "^2.9.6"
+    "@vue/cli": "^5.0.8"
   }
 }
